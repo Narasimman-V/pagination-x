@@ -209,7 +209,7 @@ This is a mandatory attribute. The list of JSON objects to be displayed is passe
  
 #### 5.2.4 columns ##
 
-This is a mandatory attribute. This describes the options for each column in the table. The snippet below shows a sample columns attributes:
+This is a mandatory attribute. This describes the options for each column in the table. The snippet below shows a sample columns attribute:
 
     $scope.columns = [
 		{title:"SNo",dataKey:"Sno",sortKey:"Sno",width:"5%"},
@@ -225,12 +225,12 @@ This is a mandatory attribute. This describes the options for each column in the
 
 Meaning and use of attributes (Again, the names are self explanatory I hope):
 
-- **title** Mandatory attribute. This is the name of the header for the column.
-- **dataKey** Mandatory attribute. This is the name of the attribute of the JSON object that has the value for a particular column.
-- **sortKey** Mandatory attribute if sorting is required for a column. The attribute by which sorting should happen. 
-- **width** Optional attribute. Gives the width for the column.
-- **style** Optional attribute. Adds CSS style to the column.
-- **searchable** Optional attribute. By default all columns are searchable. To turn off searching on a particular column, set this attribute to false. In the example above, column 'County' is not searchable since 'searchable' attribute is set to false.
+- **title** Mandatory property. This is the name of the header for the column.
+- **dataKey** Mandatory property. This is the name of the attribute of the JSON object that has the value for a particular column.
+- **sortKey** Mandatory property if sorting is required for a column. The property by which sorting should happen. 
+- **width** Optional property. Gives the width for the column.
+- **style** Optional property. Adds CSS style to the column.
+- **searchable** Optional property. By default all columns are searchable. To turn off searching on a particular column, set this property to false. In the example above, column 'County' is not searchable since 'searchable' property is set to false.
 
 #### 5.2.5 page-size-options ##
 
@@ -240,8 +240,8 @@ This is an optional attribute. The snippet below shows a sample:
 
 It has only two attributes:
 
-- **pageSizeMenu** Optional attribute. A list of options to be displayed in the drop-down menu. If it is not set, the default value is ['5', '10', '15', '25', '50'].
-- **defaultSize** Optional attribute. The default page size option. On page load, this is automatically selected in the drop-down and only these many records are displayed. If it is not set, the default value is 10. 
+- **pageSizeMenu** Optional property. A list of options to be displayed in the drop-down menu. If it is not set, the default value is ['5', '10', '15', '25', '50'].
+- **defaultSize** Optional property. The default page size option. On page load, this is automatically selected in the drop-down and only these many records are displayed. If it is not set, the default value is 10. 
 
 #### 5.2.6 toolbar-options ##
 
@@ -253,10 +253,10 @@ If we want to have links to pages instead of text-box, we have to set the toolba
 
     $scope.toolbarOptions = {toolbarType:"link", linkSize:10};
 
-It has two attributes:
+It has two properties:
 
-- **toolbarType** Optional. Only possible value in PaginationX Version 1.0 is 'link'. If it is not set, instead of page links in the navigation toolbar, a text-box is displayed as explained above.
-- **linkSize** Optional. Sets the size of page links in the navigation toolbar. If it is not set, default value is 10.
+- **toolbarType** Optional property. Only possible value in PaginationX Version 1.0 is 'link'. If it is not set, instead of page links in the navigation toolbar, a text-box is displayed as explained above.
+- **linkSize** Optional property. Sets the size of page links in the navigation toolbar. If it is not set, default value is 10.
 
 ![](./img/LinkTypeToolbar.png 'Link Type Toolbar')
 
@@ -295,10 +295,10 @@ The 'action-column-options' has action column settings for the entire action col
 		]
 	};
 
-- **title** Optional attribute. If action column feature is enabled, this gives header name to the action column. If not set, default value is 'Actions'.
-- **colWidth** Optional attribute. The width for the action column.
-- **htmlAttrbs** Optional attribute. The HTML attributes for the action column (which is a <td\> of HTML <table\>. This is a simple yet powerful option. Any number of HTML attributes can be set in a single string. From design perspective, this improves performance also (since we can avoid a concatenation operation internally for each attribute). In the sample snippet above, htmlAttrbs has both 'id' and 'class' HTML attributes of <td\>. You can give any number of HTML attributes verbatim as shown above. It should be a simple string as if copied from the <td\> settings of a HTML <table\>.
-- **actions** Mandatory attribute. This is where the button(s) or link(s) or both for the action column are configured. For each button or link, a JSON definition object is added. In the sample snippet above, we have a button and a link. Following are the properties of this JSON object.
+- **title** Optional property. If action column feature is enabled, this gives header name to the action column. If not set, default value is 'Actions'.
+- **colWidth** Optional property. The width for the action column.
+- **htmlAttrbs** Optional property. The HTML attributes for the action column (which is a <td\> of HTML <table\>. This is a simple yet powerful option. Any number of HTML attributes can be set in a single string. From design perspective, this improves performance also (since we can avoid a concatenation operation internally for each attribute). In the sample snippet above, htmlAttrbs has both 'id' and 'class' HTML attributes of <td\>. You can give any number of HTML attributes verbatim as shown above. It should be a simple string as if copied from the <td\> settings of a HTML <table\>.
+- **actions** Mandatory property. This is where the button(s) or link(s) or both for the action column are configured. For each button or link, a JSON definition object is added. In the sample snippet above, we have a button and a link. Following are the properties of this JSON object.
 	- **name** Mandatory property. Name of the HTML button or link. This property is used to map the handler for the click event of the button or link in the 'action-handlers' attribute. Please refer section 'action-handlers' below for details.
 	- **type** Optional property. Type of the action element. At the moment, only two types are supported - button and link. Default type is Button. It's value should be 'Button' for buttons and 'Link' for links.
 	- **href** Mandatory property if 'type' is 'Link'. Gives the URL for the HTML link.
@@ -462,13 +462,13 @@ The snippet below shows export options for all six options:
 
 Meaning and use of all the properties of export-options object:
 
-- **type** Optional attribute. The type of export. Right now, only two values are possible - PDF and excel. Both are enabled by default if 'export' is enabled in 'features'.
-- **records** Optional attribute. As explained above, there are three options. Set it to 'page' to export only the current page records. Set it to 'all' to export all pages. Set it to 'selected' to export only selected or filtered records. This is the default value.
-- **columns** Optional attribute. Specifies the columns to be exported and their names . If it is not set, all columns in the 'columns' attribute are exported. In the example above, there are two separate column arrays - one for PDF and one for Excel. A single definition can be used for both. For each column, only two properties are required - 'title' for header and 'dataKey' for the JSON attribute.
-- **fileName** Optional attribute. Specifies the name of the exported file. If it is not set, default value is 'PdfReport' for PDF and 'ExcelReport' for Excel.
-- **buttonName** Optional attribute. Sets the name of the export button. If it is not set, default value is 'Pdf' for PDF and 'XL' for Excel.
-- **style** Optional attribute. Applicable only for PDF export. This lets you format the PDF file to be exported. PaginationX uses JsPDF for PDF export (an excellent tool for PDF exports) For details please refer the JsPDF documentation.
-- **header** Optional attribute. Applicable only for PDF export. This lets you give a title to be displayed at the beginning of the PDF file.
+- **type** Optional property. The type of export. Right now, only two values are possible - PDF and excel. Both are enabled by default if 'export' is enabled in 'features'.
+- **records** Optional property. As explained above, there are three options. Set it to 'page' to export only the current page records. Set it to 'all' to export all pages. Set it to 'selected' to export only selected or filtered records. This is the default value.
+- **columns** Optional property. Specifies the columns to be exported and their names . If it is not set, all columns in the 'columns' attribute are exported. In the example above, there are two separate column arrays - one for PDF and one for Excel. A single definition can be used for both. For each column, only two properties are required - 'title' for header and 'dataKey' for the JSON attribute.
+- **fileName** Optional property. Specifies the name of the exported file. If it is not set, default value is 'PdfReport' for PDF and 'ExcelReport' for Excel.
+- **buttonName** Optional property. Sets the name of the export button. If it is not set, default value is 'Pdf' for PDF and 'XL' for Excel.
+- **style** Optional property. Applicable only for PDF export. This lets you format the PDF file to be exported. PaginationX uses JsPDF for PDF export (an excellent tool for PDF exports) For details please refer the JsPDF documentation.
+- **header** Optional property. Applicable only for PDF export. This lets you give a title to be displayed at the beginning of the PDF file.
 
 ### 5.3 UI Customization
 
