@@ -16,7 +16,7 @@ For a step-by-step guide to use it in your application, please refer the '5.1 Se
 
 ##2. Demos
 
-There are 3 demos for PaginationX available with the source code. To run them all in your local machine, please follow steps give in 'Getting Started' section above.
+There are 3 demos for PaginationX available with the source code. To run them all in your local machine, please follow steps given in 'Getting Started' section above.
 
 - **Simple Demo** 
 	- Demo with minimal features - Only Search, Page Size List, Pagination Text, and Pagination Toolbar are available. Toolbar type is 'Links' (not the default Textbox) (For more details, please refer Developer Manual below).
@@ -26,7 +26,7 @@ There are 3 demos for PaginationX available with the source code. To run them al
 
 ![](./img/demo-simple.png 'Simple Demo')
 
-- **Complex** 
+- **Complex** (For a complete list of features, please refer '3. Features' section below)
 	- Demo with most of the features.
 	- Select column with the checkbox disabled for the first row (note the missing checkbox in the first row).
 	- Action column with global action-column-options of an Edit button and Delete link. The global setting is overridden for the first row. Instead of Delete link, Delete button is added. Clicking the button calls event handlers in the controller. In the event handler, row details are logged to the console. Please enable Developer tools in Chrome to view the log.
