@@ -349,7 +349,7 @@ This is the attribute for the PaginationX API. This and the 'action-handlers' at
 - **changePageSize** Method handling page size change event. This method calls the setPage method internally. Developer can override it.
 - **getCurrentPageRecords** Method to get the list of records displayed on the current page. This method cannot be overridden.
 - **getSelectedRecords** Method to get the list of records selected by the user. This method cannot be overridden.
-- **reload** If the underlying list is changed (for ex, after a re-query on the server), invoke this method and pass it the new list. Note that you also have to set the new list to the original list in the controller. Please refer the code snippet in section for 'action-handlers' section.  
+- **reload** If the underlying list is changed (for ex, after a re-query on the server), invoke this method and pass it the new list. >Note that you also have to set the new list to the original list in the controller. Please refer the code snippet in section for 'action-handlers' section.  
 
 The pagination-x attribute is an optional attribute. But it is mandatory if you want to access the data and functions explained above.
  
@@ -363,7 +363,7 @@ In HTML:
 
     <pagination-x id="id_emp_roster" ... pagination-x="pagination" ... ></pagination-x>
 
-**NOTE:** As explained in the 'Methods' section above, handling of the following events can be customized - search, page change, and page size change. For more details and code snippets, please refer the 'action-handlers' section below. You can also go through the Demo code if required.
+> **NOTE:** As explained in the 'Methods' section above, handling of the following events can be customized - search, page change, and page size change. For more details and code snippets, please refer the 'action-handlers' section below. You can also go through the Demo code if required.
 
 #### 5.2.10 action-handlers ##
 
@@ -475,18 +475,15 @@ Meaning and use of all the properties of export-options object:
 - **Global Configurations (style sheet)** The PaginationX directive uses a separate style sheet for most of the UI aspects of the component. It can be customized to suit project requirements. All this styling is in the **paginationx.css** file.
 
 - **Cell level configurations** For fine grained UI control, PaginationX let you embed HTML/Styling elements for each and every cell displayed in the pagination table. This lets add data dependent, conditional styling to individual cells in the table. For example, for the Employee Roster sample application, suppose we need to highlight county 'Summerbush' in red. There are two solutions to this problem:
-	 
-
-	1. **Dynamic styling properties:** PaginationX let developers add a dynamic styling property for each and every column inside the JSON list. Advantage in using this property is that you don't need to embed HTML content along with data. If HTML content is there in the table, it may be exported along with data when users export data. The naming convention for dynamic styling property is 'columnNameStyle'. Here 'columnName' is the dynamic part. For example to highlight cells containing 'Summerbush' as value in the 'county' column, add a 'countyStyle' property to that particular row with required html style attributes as shown below:
-	
+ 1. **Dynamic styling properties:** PaginationX let developers add a dynamic styling property for each and every column inside the JSON list. Advantage in using this property is that you don't need to embed HTML content along with data. If HTML content is there in the table, it may be exported along with data when users export data. The naming convention for dynamic styling property is 'columnNameStyle'. Here 'columnName' is the dynamic part. For example to highlight cells containing 'Summerbush' as value in the 'county' column, add a 'countyStyle' property to that particular row with required html style attributes as shown below:
+ 
 	`[
 		{"Sno":1,"firstname":"Michelle","lastname":"Fisher", ...
 			"county":"Summerbush","countyStyle":"color:red", ... },
 		...
 	];`
-	2. **Embedding HTML** This is another way to add style to a cell in the table. But if user exports data, HTML markup is also exported. If you must use this solution, there is a workaround for this problem. Create a separate column for displaying. This column should not be part of the column list for export. Please refer section '5.2.11 export-options' for details on how to configure export columns. The snippet below shows how to use <span\> element to highlight the county column in red for the first record:
-
-
+ 2. **Embedding HTML** This is another way to add style to a cell in the table. But if user exports data, HTML markup is also exported. If you must use this solution, there is a workaround for this problem. Create a separate column for displaying. This column should not be part of the column list for export. Please refer section '5.2.11 export-options' for details on how to configure export columns. The snippet below shows how to use <span\> element to highlight the county column in red for the first record:
+ 
 	`[
 		{"Sno":1,"firstname":"Michelle","lastname":"Fisher", ... 
 			"county":'<span style="color:red;">Summerbush</span>', ... },
