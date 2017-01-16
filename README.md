@@ -12,8 +12,6 @@ Quickest way to get it running in your machine:
 
 > **NOTE:** If you want to access it directly in Chrome without deploying in a web server, you need to enable CORS requests in Chrome. Run the following command (for windows 7) from windows run menu - 'chrome --disable-web-security --user-data-dir' to do it. If you close the browser and open again, web security will be enabled. Otherwise, you can use Firefox without the CORS issue.
 
-Alternatively, you can check out the demos at Plunker as explained in the Demo section below. 
-
 For a step-by-step guide to use it in your application, please refer the '5.1 Setting up' section below.
 
 ##2. Demos
