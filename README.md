@@ -6,7 +6,7 @@ PaginationX (X for extensible – explained in the design section below) is an A
 
 Quickest way to get it running in your machine: 
 
-1. Download the archive file - PaginationX.rar. 
+1. Download the zip file. 
 2. Deploy it in a web server by simply unzipping it into the right folder  (Eg., into the webapps directory in Tomcat server).
 3. Access the demo page included for your convenience from a browser (PaginationX was tested in Chrome 55.x Version) with this URL : http://localhost:8080/demo-simple.html
 
