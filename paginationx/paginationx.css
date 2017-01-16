@@ -1,0 +1,72 @@
+.pagination-buttons {
+	display: inline-block; padding-left: 5px; padding-right: 5px;border-style: solid; border-width: thin; font-family: monospace; font-size: small; font-weight:bold;
+}
+.pagination-buttons.active {
+	cursor:pointer;
+}
+.pagination-buttons.active.export-buttons {
+	margin-left:5px;
+}
+.pagination-buttons.inactive {
+	cursor:not-allowed !important;	background-color:grey; pointer-events: none;
+}
+.pagination-text-container {
+	display: inline-block; padding-left: 5px; padding-right: 5px;border-style: solid; border-width: thin;
+}
+.pagination-textbox {
+	text-align:center;border-style:solid; border-width:thin; height:19px; font-size:small; color:black;
+}
+.search-div {
+	float:right;
+}
+.search-icon {
+	padding-right:0px; float:left; margin-top:3px;
+}
+.export-div {
+	float:left;width:33%;
+}
+.page-size-div {
+	float:left; width:33%; text-align:left;
+}
+.search-textbox {
+	float:left;margin-left:5px;text-align:center;border-style:solid; border-width:thin; height:19px; font-size:small; color:black;
+}
+.pagination-toolbar-div {
+	float:right;margin:0;
+}
+.pagination-text-style {
+	float:left;font-size:small; color:black;
+}
+.no-data-message-style {
+	font-weight:bold;font-size:15px;text-align:center;
+}
+.size-label {
+	padding-right:0px; padding-top:7px; font-size:small; color:black;
+}
+.page-size-list {
+	border-style:solid; border-width:thin; border-color:black; height:19px; font-size:small; color:black;
+}
+.select-column-header,.action-column-header {
+	text-align:left; padding-left:8px !important;
+}
+
+#id_emp_roster th {
+	text-align:left; padding-left:8px;
+}
+#id_emp_roster td {
+	text-align:left;
+}
+
+#employees th {
+	text-align:left; padding-left:8px; padding-right:0px;
+}
+#employees td {
+	text-align:left;
+}
+
+#employees2 th {
+	text-align:left; padding-left:8px; padding-right:0px;
+}
+#employees2 td {
+	text-align:left;
+}

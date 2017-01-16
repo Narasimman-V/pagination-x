@@ -1,0 +1,58 @@
+/* Remove the navbar's default margin-bottom and rounded borders */
+.navbar {
+margin-bottom: 0;
+border-radius: 0;
+background-color : #04293c
+}
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {height: 700px}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+.sidenav {
+height: auto;
+padding: 15px;
+}
+.row.content {height:auto;}
+}
+
+.app-name {
+color: white;
+style: bold;
+}
+
+.search-header {
+background-color: #31708f;
+padding-left: 10px;
+margin-bottom: 10px;
+}
+search-header-text {
+color: white;
+style: bold;
+margin-top:0px;
+}
+
+h3 {
+color: white;
+style: bold;
+margin-top:5px;
+}
+
+form-group.col-md-12.text-left.search-header {
+		height: 35px;
+}	
+.results-pagination {
+	margin-bottom: 0px;
+}
+.button-hr {
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+.radio-label {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.checkbox-label {
+	margin-bottom: 0px;
+}    
