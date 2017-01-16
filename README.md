@@ -1,5 +1,4 @@
 # PaginationX
-----------
 
 PaginationX (X for extensible – explained in the design section below) is an Angular JS 1.4.4 based pagination directive. After trying out few already available open source solutions and realizing their shortcomings, I decided to create PaginationX. Please refer the Features and Design sections below for details.
 
