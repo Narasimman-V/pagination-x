@@ -1,6 +1,15 @@
 # PaginationX
 
-PaginationX (X for extensible – explained in the design section below) is an Angular JS 1.4.4 based pagination directive. After trying out few already available open source solutions and realizing their shortcomings, I decided to create PaginationX. Please refer the Features and Design sections below for details.
+PaginationX (X for extensible – explained in the design section below) is an Angular JS 1.4.4 based pagination directive. After trying out few already available open source solutions and realizing their shortcomings, I decided to create PaginationX. 
+
+#### Highlights ####
+
+- Very easy to add/remove a column for select all/few rows and a column for action elements (button/link). No coding is required. **All through static JSON configurations**.
+- **High performance**. Number of angular watchers is negligible (only about 30-60 max).
+- Support for **fast PDF/Excel export** (Credits to JsPDF and AlsSQL)
+- Very **minimal to no coding** required (one of the most important design goals)  
+
+Please refer the Features and Design sections below for more details.
 
 ##1. Getting Started
 
