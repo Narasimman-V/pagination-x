@@ -332,6 +332,7 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 		{title: "Last Name", dataKey: "lastname"},
 		{title: "Department", dataKey: "jobtitle"},
 		{title: "City", dataKey: "city"},
+		{title: "County", dataKey: "county"},
 		{title: "Mobile", dataKey: "mobile"},
 		{title: "Email", dataKey: "email"}
 	];
@@ -342,6 +343,7 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 		{title: "Last Name", dataKey: "lastname"},
 		{title: "Job Title", dataKey: "jobtitle"},
 		{title: "City", dataKey: "city"},
+		{title: "County", dataKey: "county"},
 		{title: "Mobile", dataKey: "mobile"},
 		{title: "Email", dataKey: "email"}
 	];
