@@ -35,7 +35,7 @@ There are 3 demos for PaginationX available with the source code. To run them al
 
 ![](./img/demo-simple.png 'Simple Demo')
 
-- **Complex** (For a complete list of features, please refer '3. Features' section below)
+- **Complex** (If you are new to pagination, please refer '3. Features' section below for the complete list of features)
 	- Demo with most of the features.
 	- Select column with the checkbox disabled for the first row (note the missing checkbox in the first row).
 	- Action column with global action-column-options of an Edit button and Delete link. The global setting is overridden for the first row. Instead of Delete link, Delete button is added. Clicking the button calls event handlers in the controller. In the event handler, row details are logged to the console. Please enable Developer tools in Chrome to view the log.
