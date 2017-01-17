@@ -34,6 +34,7 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 		{title: "Last Name", dataKey: "lastname"},
 		{title: "Department", dataKey: "jobtitle"},
 		{title: "City", dataKey: "city"},
+		{title: "County", dataKey: "county"},
 		{title: "Mobile", dataKey: "mobile"},
 		{title: "Email", dataKey: "email"}
 	];
@@ -44,6 +45,7 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 		{title: "Last Name", dataKey: "lastname"},
 		{title: "Job Title", dataKey: "jobtitle"},
 		{title: "City", dataKey: "city"},
+		{title: "County", dataKey: "county"},
 		{title: "Mobile", dataKey: "mobile"},
 		{title: "Email", dataKey: "email"}
 	];
@@ -109,7 +111,8 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 		"changePageSize":$scope.handleSizeChange, "search":$scope.handleSearch};	
 
 	$scope.employees = [
-		{"Sno":1,"firstname":"Michelle","lastname":"Fisher","jobtitle":"HRD/Training and Development Administrator","county":'<span style="color:red;">Summerbush</span>',"city":"East Pepperell","email":"michelle.fisher@kmail.com","mobile":815231416,selectable:false,actions:[{name:"Edit", type:"Button", htmlAttrbs:'id="abc" class="def"'},{name:"Delete", type:"Button", htmlAttrbs:'id="ijk" class="lmn"'}]},
+		//{"Sno":1,"firstname":"Michelle","lastname":"Fisher","jobtitle":"HRD/Training and Development Administrator","county":'<span style="color:red;">Summerbush</span>',"city":"East Pepperell","email":"michelle.fisher@kmail.com","mobile":815231416,selectable:false,actions:[{name:"Edit", type:"Button", htmlAttrbs:'id="abc" class="def"'},{name:"Delete", type:"Button", htmlAttrbs:'id="ijk" class="lmn"'}]},
+		{"Sno":1,"firstname":"Michelle","lastname":"Fisher","jobtitle":"HRD/Training and Development Administrator","county":"Summerbush","countyStyle":"color:red","city":"East Pepperell","email":"michelle.fisher@kmail.com","mobile":815231416,selectable:false,actions:[{name:"Edit", type:"Button", htmlAttrbs:'id="abc" class="def"'},{name:"Delete", type:"Button", htmlAttrbs:'id="ijk" class="lmn"'}]},
 		{"Sno":2,"firstname":"Phil","lastname":"Poole","jobtitle":"Training Coordinator","county":"Edgecliff","city":"Ashkum","email":"phil.poole@kmail.com","mobile":833966721},
 		{"Sno":3,"firstname":"Joshua","lastname":"Gibson","jobtitle":"Sales Consultant","county":"Westercrest","city":"Lanesville","email":"joshua.gibson@kmail.com","mobile":812850587},
 		{"Sno":4,"firstname":"Sally","lastname":"Young","jobtitle":"High-Pressure Engineer","county":"Esterlyn","city":"Ponder","email":"sally.young@kmail.com","mobile":920749308},
