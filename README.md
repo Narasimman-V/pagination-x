@@ -17,7 +17,12 @@ Quickest way to get it running in your machine:
 
 1. Download the zip file. 
 2. Deploy it in a web server by simply unzipping it into the right folder  (Eg., into the webapps directory in Tomcat server).
-3. Access the demo page included for your convenience from a browser (PaginationX was tested in Chrome 55.x Version) with this URL : http://localhost:8080/demo-simple.html
+3. Three demos are included for your convenience with the source code (PaginationX was tested in Chrome 55.x Version): 
+	1. **Simple** http://localhost:8080/pagination-x-master/demo-simple.html
+	2. **Complex** http://localhost:8080/pagination-x-master/demo-complex.html
+	3. **Multiple Instances** http://localhost:8080/pagination-x-master/demo-multiple-instances.html
+
+For more details on the demos, please refer the '2. Demos' section below.
 
 > **NOTE:** If you want to access it directly in Chrome without deploying in a web server, you need to enable CORS requests in Chrome. Run the following command (for windows 7) from windows run menu - 'chrome --disable-web-security --user-data-dir' to do it. If you close the browser and open again, web security will be enabled. Otherwise, you can use Firefox without the CORS issue.
 
@@ -30,7 +35,7 @@ There are 3 demos for PaginationX available with the source code. To run them al
 - **Simple Demo** 
 	- Demo with minimal features - Only Search, Page Size List, Pagination Text, and Pagination Toolbar are available. Toolbar type is 'Links' (not the default Textbox) (For more details, please refer Developer Manual below).
 	- Files: **demo-simple.html** and **controller-simple.js**
-	- URL: http://localhost:8080/PaginationX/demo-simple.html
+	- URL: http://localhost:8080/pagination-x-master/demo-simple.html
 	- Screenshot:
 
 ![](./img/demo-simple.png 'Simple Demo')
@@ -47,6 +52,7 @@ There are 3 demos for PaginationX available with the source code. To run them al
 	- Clicking 'Print Page' button at the bottom logs out details of all records currently displayed to the console. 
 	- External event handlers (in controller) are mapped to the following events - search, page change, and page size change. Inside the event handlers, a log is printed to the console and then the built-in event handlers are called.
 	- Files: **demo-complex.html** and **controller-complex.js**
+	- URL: http://localhost:8080/pagination-x-master/demo-complex.html
 	- Screen shot:
 
 ![](./img/demo-complex.png 'Complex Demo')
@@ -58,7 +64,7 @@ There are 3 demos for PaginationX available with the source code. To run them al
 	- Two different static lists of JSON objects are used.
 	- Many of the features in the Complex demo are available here too (once you have gone through the Complex demo, all feature in this demo can be intuitively understood.
 	- Files: **demo-multiple-instances.html** and **controller-multiple-instances.js**
-	- URL: http://localhost:8080/PaginationX/demo-multiple-instances.html
+	- URL: http://localhost:8080/pagination-x-master/demo-multiple-instances.html
 	- Screen shot:
 
 ![](./img/demo-multiple.png 'Multiple Instances Demo')
@@ -114,7 +120,7 @@ Following simple steps explain how to add PaginationX in few minutes to an appli
 The sample used for this illustration is a simple Employee Roster application with minimal features. The files for the sample are: demo-simple.html and controller-simple.js. On how to run the demo in your machine, please refer Getting Started section above. PaginationX has a rich set of easily configurable features that are explained in the Features section below. To view more complex samples, please refer Demos section above. 
 
 #### 5.1.1 Adding dependencies
-PaginationX module has only the following 3 files: 
+PaginationX module has only the following 3 files. All of them inside paginationx directory. Just include that directory: 
 
 1. **paginationx.js** The script file with the directive definition.
 2. **paginationx.html** The template for the directive.
@@ -135,7 +141,7 @@ Following are the dependencies:
 All these files are available with the project source for your convenience. Include them all into your project:
    
 	<link rel="stylesheet" href=".\bootstrap\css\bootstrap.min.css">
-	<link rel="stylesheet" href=".\paginationx.css">
+	<link rel="stylesheet" href=".\paginationx\paginationx.css">
 
 	<script src=".\jquery\jquery-1.12.4.min.js"></script>
 	<script src=".\angular\angular.min.js"></script>
@@ -143,7 +149,7 @@ All these files are available with the project source for your convenience. Incl
 	<script src=".\jslib\xlsx.core.min.js"></script>
 	<script src=".\jslib\jspdf.min.js"></script>
 	<script src=".\jslib\jspdf.plugin.autotable.js"></script>
-	<script src=".\paginationx.js"></script>
+	<script src=".\paginationx\paginationx.js"></script>
 
 #### 5.1.2 Injecting paginationX module
 Inject the paginationX module into your application's module. Suppose, myapp is your application's Angular module, then:
