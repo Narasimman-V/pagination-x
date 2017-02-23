@@ -1,11 +1,11 @@
 <div>
    <!------------------------- 1. Row above the table with search box, export buttons, and page size drop-down ----------------------------------->
-   <div ng-if="::list.length">
+   <div>
       <div class="page-size-div" ng-if="::features.pageSize">
          <!----------- 1.C Division for page size drop-down ----------->
          <span class="size-label">Size</span>
          <select id="pageSizeDrop" ng-options="size for size in pageSizeOptions.pageSizeMenu track by size" ng-model="paginationX.pageSize" name="pageSize" ng-change="changePageSize()" class="page-size-list"></select>
-      </div>      
+      </div>
       <div class="export-div" ng-if="::features.export">
          <!----------- 1.B Division for export buttons ----------->
          <span ng-repeat="option in ::exportOptions" ng-click="export(option)"

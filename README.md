@@ -182,6 +182,38 @@ This sample has three attributes passed to the directive. Just have a look at ho
 	//Make sure the JSON object properties match the properties in the columns definition object above. 
 	//A simple trick is to copy and paste the static JSON list from one of the demos. 
 
+#### 5.1.5 Dynamically loading list
+In the above example, we have loaded a static list (through the 'list' attribute). This is great for quick POCs. But in real time projects, we have to load list dynamically after getting it from the server. In this case, we have to load the list using the 'load' function of the pagination-x API. So, your HTML and controller code becomes:
+
+**HTML:**
+
+	<pagination-x id="id_emp_roster" features="features" columns="columns" pagination-x="pagination"> </pagination-x>
+
+**Controller:**
+
+	$scope.features = {"search":true, "pageSize":true, "paginationText":true};
+	$scope.pagination = {}; // Added to access the pagination-x API
+	$scope.columns = [
+		{title:"SNo",dataKey:"Sno",sortKey:"Sno",width:"5%"},
+		{title:"First Name",dataKey:"firstname",sortKey:"firstname",width:"8%"},
+		{title:"Last Name",dataKey:"lastname",sortKey:"lastname",width:"8%"},
+		{title:"Designation",dataKey:"jobtitle",sortKey:"jobtitle",width:"20%"},
+		{title:"County",dataKey:"county",sortKey:"county",width:"10%"},
+		{title:"City",dataKey:"city",sortKey:"city",width:"10%"},
+		{title:"Email",dataKey:"email",sortKey:"email",width:"15%",
+			style:"overflow-wrap: break-word;word-wrap: break-word; word-break: break-all;"},
+		{title:"Mobile",dataKey:"mobile",sortKey:"mobile",width:"10%"}
+	];
+	$scope.employees = [<Your JSON list goes here>];
+	//Make sure the JSON object properties match the properties in the columns definition object above. 
+	//A simple trick is to copy and paste the static JSON list from one of the demos.
+
+	$timeout( function() {
+		$scope.pagination.load($scope.employees);
+	}, 1);
+
+> **WARNING: The $timeout service is used just to simulate the delay in loading data from the server. If you use static list and then use load, you may get an error because the pagintion-x API, assigned to the $scope.pagination object in controller may not be available immediately.** 
+
 ### 5.2 Customizing Features (Attributes) ##
 
 PaginationX has a comprehensive set of features which can be customized through a set eleven attributes. Some of them are mandatory but most of them are optional. Each of the attributes, it's sub-attributes, and how to use them are explained in this section.
@@ -220,7 +252,7 @@ I hope the meaning of each attribute can be intuitively understood from the name
 
 #### 5.2.3 list ##
 
-This is a mandatory attribute. The list of JSON objects to be displayed is passed to it.
+This is a not mandatory attribute. This is an option for doing POCs quickly with hard-coded JSON list. The list of JSON objects to be displayed is assigned to it.
  
 #### 5.2.4 columns ##
 
@@ -359,14 +391,14 @@ This is the attribute for the PaginationX API. This and the 'action-handlers' at
 
 **Methods:**
 
-- **setPage** Method handling page change event. Developer can override it.
-- **searchFn** Method handling search event. This method calls the setPage method internally. Developer can override it.
-- **changePageSize** Method handling page size change event. This method calls the setPage method internally. Developer can override it.
-- **getCurrentPageRecords** Method to get the list of records displayed on the current page. This method cannot be overridden.
-- **getSelectedRecords** Method to get the list of records selected by the user. This method cannot be overridden.
-- **reload** If the underlying list is changed (for ex, after a re-query on the server), invoke this method and pass it the new list. >Note that you also have to set the new list to the original list in the controller. Please refer the code snippet in section for 'action-handlers' section.  
+- **setPage** Function handling page change event. Developer can override it.
+- **searchFn** Function handling search event. This function calls the setPage function internally. Developer can override it.
+- **changePageSize** Function handling page size change event. This function calls the setPage function internally. Developer can override it.
+- **getCurrentPageRecords** Function to get the list of records displayed on the current page. This function cannot be overridden.
+- **getSelectedRecords** Function to get the list of records selected by the user. This function cannot be overridden.
+- **load** Called to set the JSON list obtained from the server (usual scenario). Also, if the underlying list is changed dynamically (for example, after a re-query on the server), we can pass the new list to this function.  
 
-The pagination-x attribute is an optional attribute. But it is mandatory if you want to access the data and functions explained above.
+The pagination-x attribute is an optional attribute for POCs. But it is mandatory in real time projects. if you want to load the JSON list dynamically or access the data and functions explained above.
  
 It is very easy to access the pagination-x object. Just create a blank javascript object and pass it's reference to the pagination-x attribute as shown below:
 
