@@ -41,7 +41,7 @@ margin-top:5px;
 
 form-group.col-md-12.text-left.search-header {
 		height: 35px;
-}	
+}
 .results-pagination {
 	margin-bottom: 0px;
 }
@@ -55,4 +55,8 @@ form-group.col-md-12.text-left.search-header {
 }
 .checkbox-label {
 	margin-bottom: 0px;
-}    
+}
+
+.county-style {
+	color:red;
+}
