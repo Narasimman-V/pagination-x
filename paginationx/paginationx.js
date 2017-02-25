@@ -146,7 +146,7 @@ function paginationXDirective($filter, $compile) {
 				for (var j = 0; j < columns.length; j++) {
 					var columnStyle = columns[j].style === undefined ? '' : columns[j].style;
 					var cellStyle = obj[columns[j].dataKey + 'Style'] === undefined ? '' : obj[columns[j].dataKey + 'Style'];
-					tableBody = tableBody + '<td width="' + columns[j].width + '" style="' + columnStyle + cellStyle + '">' + obj[columns[j].dataKey] + '</td>';
+					tableBody = tableBody + '<td width="' + columns[j].width + '" style="' + columnStyle + '" class="' + cellStyle + '">' + obj[columns[j].dataKey] + '</td>';
 				}
 				if (scope.features.actionColumn) {
 					tableBody = tableBody + getActionColumn(obj.actions, i);
@@ -234,16 +234,14 @@ function paginationXDirective($filter, $compile) {
 		 * table header in the checkbox column, if present). This selects all selectable rows in the table on the current page.
 		 */
 		scope.handlePageSelection = function() {
-			scope.paginationX.selectAll = !scope.paginationX.selectAll;
-			toggleSelection(getPage(scope.listForDisplay, scope.paginationX.currentPage));
-			setTable();
-		}
-
-		var toggleSelection = function(list) {
-			for (var i = 0; i < list.length; i++) {
-				if (list[i].selectable === undefined || list[i].selectable === true) {
-					list[i].selected = scope.paginationX.selectAll;
+			if (scope.actionHandlers && scope.actionHandlers.pageSelection) {
+				var externalHandler = scope.actionHandlers.pageSelection;
+				if (attrs['paginationX'] === undefined) {
+					throw 'Please add pagination-x attribute to use the external handler for search event.'
 				}
+				externalHandler();
+			} else {
+				scope.paginationX.handlePageSelectionFn();
 			}
 		}
 
@@ -264,9 +262,15 @@ function paginationXDirective($filter, $compile) {
 		 * @param  {Object} object [Object for the row.]
 		 */
 		scope.handleRecordSelection = function(object) {
-			object.selected = !object.selected;
-			scope.paginationX.selectAll = isPageSelected();
-			setTable();
+			if (scope.actionHandlers && scope.actionHandlers.recordSelection) {
+				var externalHandler = scope.actionHandlers.recordSelection;
+				if (attrs['paginationX'] === undefined) {
+					throw 'Please add pagination-x attribute to use the external handler for search event.'
+				}
+				externalHandler(object);
+			} else {
+				scope.paginationX.handleRecordSelectionFn(object);
+			}
 		}
 
 		/**
@@ -347,6 +351,26 @@ function paginationXDirective($filter, $compile) {
 			return scope.page;
 		}
 
+		var handlePageSelectionFn = function() {
+			scope.paginationX.selectAll = !scope.paginationX.selectAll;
+			toggleSelection(getPage(scope.listForDisplay, scope.paginationX.currentPage));
+			setTable();
+		}
+
+		var toggleSelection = function(list) {
+			for (var i = 0; i < list.length; i++) {
+				if (list[i].selectable === undefined || list[i].selectable === true) {
+					list[i].selected = scope.paginationX.selectAll;
+				}
+			}
+		}
+
+		var handleRecordSelectionFn = function(object) {
+			object.selected = !object.selected;
+			scope.paginationX.selectAll = isPageSelected();
+			setTable();
+		}
+
 		var load = function(list) {
 			scope.list = list;
 			init();
@@ -382,10 +406,11 @@ function paginationXDirective($filter, $compile) {
 			var selectClause = '';
 			var columns = option.columns;
 			for (var i = 0; i < columns.length; i++) {
+				var exportKey = columns[i].exportKey || columns[i].dataKey;
 				if ((i + 1) === columns.length) {
-					selectClause = selectClause + columns[i].dataKey + ' AS [' + columns[i].title + ']'
+					selectClause = selectClause + exportKey + ' AS [' + columns[i].title + ']'
 				} else {
-					selectClause = selectClause + columns[i].dataKey + ' AS [' + columns[i].title + '],'
+					selectClause = selectClause + exportKey + ' AS [' + columns[i].title + '],'
 				}
 			}
 			var query = 'SELECT ' + selectClause + ' INTO XLSX("' + option.fileName + '.xlsx",{headers:true}) FROM ?';
@@ -417,6 +442,8 @@ function paginationXDirective($filter, $compile) {
 			scope.paginationX.setPage = setPage;
 			scope.paginationX.getSelectedRecords = getSelectedRecords;
 			scope.paginationX.getCurrentPageRecords = getCurrentPageRecords;
+			scope.paginationX.handlePageSelectionFn = handlePageSelectionFn;
+			scope.paginationX.handleRecordSelectionFn = handleRecordSelectionFn
 			scope.paginationX.load = load;
 		}
 
@@ -461,9 +488,18 @@ function paginationXDirective($filter, $compile) {
 			scope.searchableColumns = [];
 			for (var i = 0; i < scope.columns.length; i++) {
 				if (scope.columns[i].searchable === undefined || scope.columns[i].searchable) {
-					scope.searchableColumns.push(scope.columns[i].sortKey);
+					if (scope.columns[i].searchKeys === undefined) {
+						scope.searchableColumns.push(scope.columns[i].sortKey);
+					} else {
+						var searchKeys = scope.columns[i].searchKeys.split(",");
+						for (var i = 0; i < searchKeys.length; i++) {
+							scope.searchableColumns.push(searchKeys[i]);
+						}
+					}
+
 				}
 			}
+			console.log('searchable columns = '+JSON.stringify(scope.searchableColumns));
 		}
 
 		var setExportOptions = function() {
@@ -511,9 +547,6 @@ function paginationXDirective($filter, $compile) {
 			styles: {
 				overflow: 'linebreak'
 			},
-			columnStyles: {
-				id: { fillColor: 255 }
-			},
 			margin: {
 				top: 60
 			}
@@ -524,7 +557,7 @@ function paginationXDirective($filter, $compile) {
 			for (var i = 0; i < scope.columns.length; i++) {
 				var exportColumn = {};
 				exportColumn.title = scope.columns[i].title;
-				exportColumn.dataKey = scope.columns[i].dataKey;
+				exportColumn.dataKey = scope.columns[i].exportKey || scope.columns[i].dataKey;
 				pdfExportColumns.push(exportColumn);
 			}
 			return pdfExportColumns;

@@ -94,7 +94,7 @@ PaginationX is simple to use but rich in features. Important features are listed
 	- Navigation tool bar (displayed at the bottom right) can have links to pages or a text box where users can enter a page (handy if the number of pages is too large)
 	- Two special buttons to get the next/previous set of page links apart from the usual next/previous/first/last buttons (applicable only if the navigation bar has links for pages)
 - **Search**
-	- By default, search looks through all displayed columns but search can be turned off for specific column(s).
+	- By default, search looks through all displayed columns but search can be turned off for specific column(s). We can also add a different key for search or a multiple (comma separated) keys for a single column.
 - **Page Size Options**
 	- Page size options can be customized
 	- Default page size (page size on load) can also be customized
@@ -278,6 +278,8 @@ Meaning and use of attributes (Again, the names are self explanatory I hope):
 - **width** Optional property. Gives the width for the column.
 - **style** Optional property. Adds CSS style to the column.
 - **searchable** Optional property. By default all columns are searchable. To turn off searching on a particular column, set this property to false. In the example above, column 'County' is not searchable since 'searchable' property is set to false.
+- **searchKeys** Optional property. A single or multiple property names (separated by comma) to search for.
+- **exportKey** Optional property. By default, the property used to display a column is exported. To change this, a different property can be specified using this attribute.
 
 #### 5.2.5 page-size-options ##
 
@@ -386,16 +388,18 @@ This is the attribute for the PaginationX API. This and the 'action-handlers' at
 - **endIndex** Property to get the index of the last record on the page.
 - **pageSize** Property to get the page size option.
 - **totalPages** Property to get the total number of pages.
-- **search** Property to get the search string entered by user in the search box.
+- **searchText** Property to get the search string entered by user in the search box.
 - **selectAll** Property to check if all the records on the page are selected or not. It is 'true' if all records are selected on the page and 'false' otherwise.
 
 **Methods:**
 
 - **setPage** Function handling page change event. Developer can override it.
-- **searchFn** Function handling search event. This function calls the setPage function internally. Developer can override it.
+- **search** Function handling search event. This function calls the setPage function internally. Developer can override it.
 - **changePageSize** Function handling page size change event. This function calls the setPage function internally. Developer can override it.
 - **getCurrentPageRecords** Function to get the list of records displayed on the current page. This function cannot be overridden.
 - **getSelectedRecords** Function to get the list of records selected by the user. This function cannot be overridden.
+- **handlePageSelection** Function to handle selection of all records on a page (by checking the global check box).
+- **handleRecordSelection(object)** Function to handle selection of a single record (by checking the check box for a row). It is passed the object for that row as argument. 
 - **load** Called to set the JSON list obtained from the server (usual scenario). Also, if the underlying list is changed dynamically (for example, after a re-query on the server), we can pass the new list to this function.  
 
 The pagination-x attribute is an optional attribute for POCs. But it is mandatory in real time projects. if you want to load the JSON list dynamically or access the data and functions explained above.
@@ -418,7 +422,7 @@ This is an optional attribute. It is used to pass any custom event handling func
 
 **Extend/Override directive's behavior:**
 
-To extend/override the directive's built-in event handlers for search, page change, and page size change events, pass the custom event handlers in the controller for these events as values for the properties 'search', 'pageChange', and 'changePageSize'.
+To extend/override the directive's built-in event handlers for search, page change, page size change, page select, and record select events, pass the custom event handlers in the controller for these events as values for the properties 'search', 'pageChange', 'changePageSize', 'selectPage', and 'selectRecord' respectively.
 
 In controller:
 
@@ -443,10 +447,24 @@ In controller:
 		// Call built-in event handling method. should be avoided if you want to completely override built-in behavior.
 	}
 
+	$scope.handlePageSelection = function() {
+		// Do something here if you want
+		console.log('handlePageSelection function in controller called: ');
+		$scope.pagination.handlePageSelection();
+	}
+
+	$scope.handleRecordSelection = function(object) {
+		// Do something here if you want
+		console.log('handleRecordSelection function in controller called: ');
+		$scope.pagination.handleRecordSelection(object);
+	}
+
 	$scope.actionHandlers = {
 		"search":$scope.search, 
 		"changePage":$scope.handlePageChange, 
 		"changePageSize":$scope.handleSizeChange,
+		"selectPage":$scope.handlePageSelection,
+		"selectRecord":$scope.handleRecordSelection,
 		... // other event handlers
 	};` 
 
@@ -521,14 +539,15 @@ Meaning and use of all the properties of export-options object:
 
 - **Global Configurations (style sheet)** The PaginationX directive uses a separate style sheet for most of the UI aspects of the component. It can be customized to suit project requirements. All this styling is in the **paginationx.css** file.
 
-- **Cell level configurations** For fine grained UI control, PaginationX let you embed HTML/Styling elements for each and every cell displayed in the pagination table. This lets add data dependent, conditional styling to individual cells in the table. For example, for the Employee Roster sample application, suppose we need to highlight county 'Summerbush' in red. There are two solutions to this problem:
- 1. **Dynamic styling properties:** PaginationX let developers add a dynamic styling property for each and every column inside the JSON list. Advantage in using this property is that you don't need to embed HTML content along with data. If HTML content is there in the table, it may be exported along with data when users export data. The naming convention for dynamic styling property is 'columnNameStyle'. Here 'columnName' is the dynamic part. For example to highlight cells containing 'Summerbush' as value in the 'county' column, add a 'countyStyle' property to that particular row with required html style attributes as shown below:
+- **Cell level configurations** For fine grained UI control, PaginationX lets you embed HTML/CSS elements for each and every cell displayed in the pagination table. This lets add data dependent, conditional styling to individual cells in the table. For example, suppose we need to highlight county 'Summerbush' in red in the Employee Roster sample application. There are two solutions to this problem:
+ 1. **Dynamic (CSS) styling properties:** PaginationX lets developers add a dynamic styling property for each and every column inside the JSON list. Advantage in using this property is that you don't need to embed HTML content along with data. If HTML content is there in the table, it may be exported along with data when users export data. Also, using HTML inside JSON is not a good idea from the separation of concerns perspective. The naming convention for dynamic styling property is '<columnName>Style'. Here 'columnName' is the dynamic part. For example to highlight cells containing 'Summerbush' as value in the 'county' column, add a 'countyStyle' property to that particular row and pass the CSS class name as the value:
  
 	`[
 		{"Sno":1,"firstname":"Michelle","lastname":"Fisher", ...
-			"county":"Summerbush","countyStyle":"color:red", ... },
+			"county":"Summerbush","countyStyle":"county-style", ... },
 		...
 	];`
+Here 'county-style' is a simple CSS class (.county-style { color:red; } ).
  2. **Embedding HTML** This is another way to add style to a cell in the table. But if user exports data, HTML markup is also exported. If you must use this solution, there is a workaround for this problem. Create a separate column for displaying. This column should not be part of the column list for export. Please refer section '5.2.11 export-options' for details on how to configure export columns. The snippet below shows how to use <span\> element to highlight the county column in red for the first record:
  
 	`[

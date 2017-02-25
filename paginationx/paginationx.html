@@ -1,18 +1,18 @@
 <div>
-   <!------------------------- 1. Row above the table with search box, export buttons, and page size drop-down ----------------------------------->
+   <!------------------------- 1. Row above the table with search box, export buttons, and page size drop-down --------------------------------- -->
    <div>
       <div class="page-size-div" ng-if="::features.pageSize">
-         <!----------- 1.C Division for page size drop-down ----------->
+         <!----------- 1.C Division for page size drop-down --------- -->
          <span class="size-label">Size</span>
          <select id="pageSizeDrop" ng-options="size for size in pageSizeOptions.pageSizeMenu track by size" ng-model="paginationX.pageSize" name="pageSize" ng-change="changePageSize()" class="page-size-list"></select>
       </div>
       <div class="export-div" ng-if="::features.export">
-         <!----------- 1.B Division for export buttons ----------->
+         <!----------- 1.B Division for export buttons --------- -->
          <span ng-repeat="option in ::exportOptions" ng-click="export(option)"
             ng-class="{'pagination-buttons active export-buttons':listForDisplay.length > 0,'pagination-buttons inactive export-buttons':listForDisplay.length == 0}"> {{::option.buttonName}} </span>
       </div>
       <div class="search-div" ng-if="::features.search">
-         <!----------- 1.A Division for search box ----------->
+         <!----------- 1.A Division for search box --------- -->
          <span class="glyphicon glyphicon-search search-icon" aria-hidden="true"></span>
          <input id="search" type="text" ng-model="paginationX.search" placeholder="Search" ng-change="searchFn()" class="search-textbox">
       </div>
@@ -20,18 +20,18 @@
    <br><br>
    <hr class="button-hr">
 
-   <!------------------------- 2. Row for table ---------------------------------------------------------------------------------------------------->
+   <!------------------------- 2. Row for table -------------------------------------------------------------------------------------------------- -->
    <table></table>
 
-   <!------------------------- 3. Row for no-data message ------------------------------------------------------------------------------------------>
+   <!------------------------- 3. Row for no-data message ---------------------------------------------------------------------------------------- -->
    <div ng-if="listForDisplay.length < 1" class="no-data-message-style"> There is no data to display!</div>
 
-   <!------------------------- 4. Row for pagination text and pagination toolbar ------------------------------------------------------------------->
+   <!------------------------- 4. Row for pagination text and pagination toolbar ----------------------------------------------------------------- -->
    <div>
-      <!----------- 4.A Span for pagination text ------------------------------->
+      <!----------- 4.A Span for pagination text ----------------------------- -->
       <Span ng-if="listForDisplay.length && features.paginationText" class="pagination-text-style"> Viewing {{paginationX.startIndex+1}} to {{paginationX.endIndex}} of {{listForDisplay.length}} records | Page {{paginationX.currentPage}} of {{paginationX.totalPages}} pages</span>
 
-      <!----------- 4.B Division for pagination toolbar with textbox ----------->
+      <!----------- 4.B Division for pagination toolbar with textbox --------- -->
       <div ng-if="listForDisplay.length && toolbarOptions.toolbarType=='textbox'" class="pagination-toolbar-div">
          <span  ng-click="setPage(1)" ng-class="{'pagination-buttons active':paginationX.currentPage !== 1,'pagination-buttons inactive':paginationX.currentPage === 1}">
          |<
@@ -48,7 +48,7 @@
          </span>
       </div>
 
-      <!----------- 4.C Division for pagination toolbar with links ------------>
+      <!----------- 4.C Division for pagination toolbar with links ---------- -->
       <div ng-if="listForDisplay.length && toolbarOptions.toolbarType=='link'" class="pagination-toolbar-div">
          <span  ng-click="setPage(1)" ng-class="{'pagination-buttons active':paginationX.currentPage !== 1,'pagination-buttons inactive':paginationX.currentPage === 1}" title="Go to first page">
          |<
