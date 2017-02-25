@@ -210,14 +210,14 @@ function paginationXDirective($filter, $compile) {
 		}
 
 		/**
-		 * searchFn - Function to handle search event. If a handler name (for a function in the controller) is passed
+		 * search - Function to handle search event. If a handler name (for a function in the controller) is passed
 		 * as the value of 'sizeChangeHandler' attribute of the directive, it is called. Otherwise, the event is handled by this method.
 		 *
 		 * This function searches only the searchable columns (by default all displayed columns are searchable).
 		 *
 		 * @return {[type]} [description]
 		 */
-		scope.searchFn = function() {
+		scope.search = function() {
 			if (scope.actionHandlers && scope.actionHandlers.search) {
 				var externalHandler = scope.actionHandlers.search;
 				if (attrs['paginationX'] === undefined) {
@@ -225,7 +225,7 @@ function paginationXDirective($filter, $compile) {
 				}
 				externalHandler();
 			} else {
-				scope.paginationX.searchFn();
+				scope.paginationX.search();
 			}
 		}
 
@@ -234,14 +234,14 @@ function paginationXDirective($filter, $compile) {
 		 * table header in the checkbox column, if present). This selects all selectable rows in the table on the current page.
 		 */
 		scope.handlePageSelection = function() {
-			if (scope.actionHandlers && scope.actionHandlers.pageSelection) {
-				var externalHandler = scope.actionHandlers.pageSelection;
+			if (scope.actionHandlers && scope.actionHandlers.selectPage) {
+				var externalHandler = scope.actionHandlers.selectPage;
 				if (attrs['paginationX'] === undefined) {
-					throw 'Please add pagination-x attribute to use the external handler for search event.'
+					throw 'Please add pagination-x attribute to use the external handler for page selection event.'
 				}
 				externalHandler();
 			} else {
-				scope.paginationX.handlePageSelectionFn();
+				scope.paginationX.handlePageSelection();
 			}
 		}
 
@@ -262,14 +262,14 @@ function paginationXDirective($filter, $compile) {
 		 * @param  {Object} object [Object for the row.]
 		 */
 		scope.handleRecordSelection = function(object) {
-			if (scope.actionHandlers && scope.actionHandlers.recordSelection) {
-				var externalHandler = scope.actionHandlers.recordSelection;
+			if (scope.actionHandlers && scope.actionHandlers.selectRecord) {
+				var externalHandler = scope.actionHandlers.selectRecord;
 				if (attrs['paginationX'] === undefined) {
-					throw 'Please add pagination-x attribute to use the external handler for search event.'
+					throw 'Please add pagination-x attribute to use the external handler for record selection event.'
 				}
 				externalHandler(object);
 			} else {
-				scope.paginationX.handleRecordSelectionFn(object);
+				scope.paginationX.handleRecordSelection(object);
 			}
 		}
 
@@ -295,13 +295,13 @@ function paginationXDirective($filter, $compile) {
 		}
 
 		/***************************************************** External API secion starts **************************************************************/
-		var searchFn = function() {
+		var search = function() {
 			var filteredList = [];
-			if (scope.paginationX.search && scope.paginationX.search.trim().length > 0) {
+			if (scope.paginationX.searchText && scope.paginationX.searchText.trim().length > 0) {
 				for (var i = 0; i < scope.list.length; i++) {
 					var object = scope.list[i];
 					for (var j = 0; j < scope.searchableColumns.length; j++) {
-						if ((object[scope.searchableColumns[j]] + '').toLowerCase().includes(scope.paginationX.search.toLowerCase())) {
+						if ((object[scope.searchableColumns[j]] + '').toLowerCase().includes(scope.paginationX.searchText.toLowerCase())) {
 							filteredList.push(object);
 							break;
 						}
@@ -351,7 +351,7 @@ function paginationXDirective($filter, $compile) {
 			return scope.page;
 		}
 
-		var handlePageSelectionFn = function() {
+		var handlePageSelection = function() {
 			scope.paginationX.selectAll = !scope.paginationX.selectAll;
 			toggleSelection(getPage(scope.listForDisplay, scope.paginationX.currentPage));
 			setTable();
@@ -365,7 +365,7 @@ function paginationXDirective($filter, $compile) {
 			}
 		}
 
-		var handleRecordSelectionFn = function(object) {
+		var handleRecordSelection = function(object) {
 			object.selected = !object.selected;
 			scope.paginationX.selectAll = isPageSelected();
 			setTable();
@@ -437,13 +437,13 @@ function paginationXDirective($filter, $compile) {
 		/***************************************************** Initialization section starts ****************************************************/
 		var addApi = function() {
 			scope.paginationX = (scope.paginationX === undefined) ? {} : scope.paginationX;
-			scope.paginationX.searchFn = searchFn;
+			scope.paginationX.search = search;
 			scope.paginationX.changePageSize = changePageSize;
 			scope.paginationX.setPage = setPage;
 			scope.paginationX.getSelectedRecords = getSelectedRecords;
 			scope.paginationX.getCurrentPageRecords = getCurrentPageRecords;
-			scope.paginationX.handlePageSelectionFn = handlePageSelectionFn;
-			scope.paginationX.handleRecordSelectionFn = handleRecordSelectionFn
+			scope.paginationX.handlePageSelection = handlePageSelection;
+			scope.paginationX.handleRecordSelection = handleRecordSelection
 			scope.paginationX.load = load;
 		}
 
