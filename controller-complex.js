@@ -83,8 +83,8 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 
 	$scope.handleSearch = function() {
 		// Do something here if you want
-		console.log('search function in controller called: '+$scope.pagination.search);
-		$scope.pagination.searchFn();
+		console.log('search function in controller called: '+$scope.pagination.searchText);
+		$scope.pagination.search();
 	}
 
 	$scope.handlePageChange = function() {
@@ -99,6 +99,18 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 		$scope.pagination.changePageSize();
 	}
 
+	$scope.handlePageSelection = function() {
+		// Do something here if you want
+		console.log('handlePageSelection function in controller called: ');
+		$scope.pagination.handlePageSelection();
+	}
+
+	$scope.handleRecordSelection = function(object) {
+		// Do something here if you want
+		console.log('handleRecordSelection function in controller called: ');
+		$scope.pagination.handleRecordSelection(object);
+	}
+
 	$scope.editEmployee = function(emp) {
 		console.log('editEmployee in controller called for employee: '+emp.firstname+' '+emp.lastname);
 	}
@@ -108,11 +120,11 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 	}
 
 	$scope.actionHandlers = {"Edit":$scope.editEmployee,"Delete":$scope.deleteEmployee,"changePage":$scope.handlePageChange,
-		"changePageSize":$scope.handleSizeChange, "search":$scope.handleSearch};	
+		"changePageSize":$scope.handleSizeChange, "search":$scope.handleSearch, "selectPage":$scope.handlePageSelection, "selectRecord":$scope.handleRecordSelection };
 
 	$scope.employees = [
 		//{"Sno":1,"firstname":"Michelle","lastname":"Fisher","jobtitle":"HRD/Training and Development Administrator","county":'<span style="color:red;">Summerbush</span>',"city":"East Pepperell","email":"michelle.fisher@kmail.com","mobile":815231416,selectable:false,actions:[{name:"Edit", type:"Button", htmlAttrbs:'id="abc" class="def"'},{name:"Delete", type:"Button", htmlAttrbs:'id="ijk" class="lmn"'}]},
-		{"Sno":1,"firstname":"Michelle","lastname":"Fisher","jobtitle":"HRD/Training and Development Administrator","county":"Summerbush","countyStyle":"color:red","city":"East Pepperell","email":"michelle.fisher@kmail.com","mobile":815231416,selectable:false,actions:[{name:"Edit", type:"Button", htmlAttrbs:'id="abc" class="def"'},{name:"Delete", type:"Button", htmlAttrbs:'id="ijk" class="lmn"'}]},
+		{"Sno":1,"firstname":"Michelle","lastname":"Fisher","jobtitle":"HRD/Training and Development Administrator","county":"Summerbush","countyStyle":"county-style","city":"East Pepperell","email":"michelle.fisher@kmail.com","mobile":815231416,selectable:false,actions:[{name:"Edit", type:"Button", htmlAttrbs:'id="abc" class="def"'},{name:"Delete", type:"Button", htmlAttrbs:'id="ijk" class="lmn"'}]},
 		{"Sno":2,"firstname":"Phil","lastname":"Poole","jobtitle":"Training Coordinator","county":"Edgecliff","city":"Ashkum","email":"phil.poole@kmail.com","mobile":833966721},
 		{"Sno":3,"firstname":"Joshua","lastname":"Gibson","jobtitle":"Sales Consultant","county":"Westercrest","city":"Lanesville","email":"joshua.gibson@kmail.com","mobile":812850587},
 		{"Sno":4,"firstname":"Sally","lastname":"Young","jobtitle":"High-Pressure Engineer","county":"Esterlyn","city":"Ponder","email":"sally.young@kmail.com","mobile":920749308},
@@ -4330,10 +4342,9 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 	];
 
 	$scope.changeList = function() {
-		console.log('changeList called 111');
 		$scope.employees = [];
 		$scope.employees = $scope.employeesModified;
-		$scope.pagination.reload($scope.employeesModified);
+		$scope.pagination.load($scope.employeesModified);
 	}
 
 }]);
