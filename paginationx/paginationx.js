@@ -62,6 +62,7 @@ function paginationXDirective($filter, $compile) {
 			scope.sortKey = keyName;
 			scope.listForDisplay = $filter('orderBy')(scope.listForDisplay, keyName, scope.sortOrder);
 			scope.setPage(scope.paginationX.currentPage);
+			setTBody();
 		}
 
 		/**
@@ -80,7 +81,6 @@ function paginationXDirective($filter, $compile) {
 				scope.paginationX.setPage(pageNumber);
 			}
 			scope.paginationX.selectAll = isPageSelected();
-			setTable();
 		}
 
 		var getPage = function(list, pageNumber) {
@@ -94,9 +94,14 @@ function paginationXDirective($filter, $compile) {
 		var setTable = function() {
 			var element = angular.element('#'+scope.id+' table');
 			var compiled = $compile(getTemplate())(scope);
-			var oldelement = element;
 			element.replaceWith(compiled);
 		}
+
+		var setTBody = function() {
+			var element = angular.element('#'+scope.id+' tbody');
+			var compiled = $compile(getTBody(scope.columns))(scope);
+			element.replaceWith(compiled);
+		}		
 
 		var getTemplate = function() {
 			var table = '<table id=table_' + scope.id + ' class="table table-striped table-hover border-custom-class-table" >';
@@ -108,32 +113,38 @@ function paginationXDirective($filter, $compile) {
 		}
 
 		var getTHeader = function(columns) {
-			var tableHeader = '<thead class="tablestrip-bgcolor"> <tr>';
+			var tableHeader = '<thead id=thead_' + scope.id + 'class="tablestrip-bgcolor"> <tr>';
 			if (scope.features.selectColumn) {
-				var checked = (scope.paginationX.selectAll === undefined || scope.paginationX.selectAll === false) ? '' : 'checked';
-				tableHeader = tableHeader + '<th class="select-column-header" width="10px"> <input type="checkbox" name="selectAll" ng-click="handlePageSelection()" ' + checked + '></th>';
+				tableHeader = tableHeader + '<th class="select-column-header pagination-header" width="10px"> <div> <input type="checkbox" ng-model="paginationX.selectAll" name="selectAll" ng-click="handlePageSelection()"></div></th>';
 			}
 			for (var j = 0; j < columns.length; j++) {
-				tableHeader = tableHeader + '<th ng-click="sort(\'' + columns[j].sortKey + '\')" width="' + columns[j].width + '" style="' + columns[j].style + '">' + columns[j].title;
-				if (scope.sortKey === columns[j].sortKey) {
-					if (scope.sortOrder === true) {
-						tableHeader = tableHeader + '&nbsp <span class="glyphicon glyphicon-chevron-up"></span>';
-					} else {
-						tableHeader = tableHeader + '&nbsp <span class="glyphicon glyphicon-chevron-down"></span>';
-					}
-				}
-				tableHeader = tableHeader + '</th>';
+				tableHeader = tableHeader + '<th class="pagination-header" width="' + columns[j].width + '" style="' + columns[j].style + '"> <div ng-click="sort(\'' + columns[j].sortKey + '\')">' + columns[j].title;
+				tableHeader = tableHeader + '&nbsp <span ng-show="sortKey == \'' + columns[j].sortKey + '\'" ng-class="{\'glyphicon glyphicon-chevron-up\':sortOrder, \'glyphicon glyphicon-chevron-down\':!sortOrder}"></span>';
+				tableHeader =  tableHeader + '</div></th>';
 			}
 			if (scope.features.actionColumn) {
 				var actionColumnName = scope.actionColumnOptions.title !== undefined ? scope.actionColumnOptions.title : "Actions";
-				tableHeader = tableHeader + '<th class="action-column-header" width="' + scope.actionColumnOptions.colWidth + '">' + actionColumnName + '</th>';
+				tableHeader = tableHeader + '<th class="action-column-header pagination-header" width="' + scope.actionColumnOptions.colWidth + '"> <div>' + actionColumnName + '</div></th>';
 			}
-			tableHeader = tableHeader + '</tr></thead>';
+			tableHeader = tableHeader + '</tr>';
+
+			if (scope.features.columnSearch) {
+				tableHeader = tableHeader + '<tr ng-show="showColumnSearch">';
+				tableHeader =  (scope.features.selectColumn) ? tableHeader + '<th></th>' : tableHeader;
+				for (var j = 0; j < columns.length; j++) {
+					var searchKey = scope.columns[j].searchKey || scope.columns[j].dataKey;
+					tableHeader = tableHeader + '<th class="pagination-header" width="' + columns[j].width + '" style="' + columns[j].style + '">';
+					tableHeader = (columns[j].searchable === undefined || columns[j].searchable) ? tableHeader + '<input type="text" ng-model="columnSearchText.' + searchKey + '" ng-change="columnSearch()" class="column-search-textbox active"/></th>' : tableHeader + '</th>';
+				}
+				tableHeader =  (scope.features.actionColumn) ? tableHeader + '<th></th>' : tableHeader;
+				tableHeader = tableHeader + '</tr>';
+			}
+			tableHeader = tableHeader + '</thead>';
 			return tableHeader;
 		}
 
 		var getTBody = function(columns) {
-			var tableBody = '<tbody>';
+			var tableBody = '<tbody id="tbody_' + scope.id + '">';
 			for (var i = 0; i < scope.page.length; i++) {
 				var obj = scope.page[i];
 				tableBody = tableBody + '<tr>';
@@ -294,8 +305,55 @@ function paginationXDirective($filter, $compile) {
 			}
 		}
 
+		scope.toggleColumnSearch = function() {
+			console.log('toggleColumnSearch 1111111111'+ scope.showColumnSearch);
+			scope.showColumnSearch = !scope.showColumnSearch;
+		}
+
+		scope.columnSearch = function() {
+			clearGlobalSearchText();
+			scope.listForDisplay = scope.list;
+			var filteredList = [];
+			for (var i = 0; i < scope.searchableColumns.length; i++) {
+				var property = scope.searchableColumns[i];
+				if (scope.columnSearchText[property]) {
+					scope.listForDisplay = searchByColumn(property);
+				}
+			}
+			scope.changePageSize();
+			setTBody();
+		}
+
+		var searchByColumn = function(property) {
+			var criterion = {};
+			criterion[property] = scope.columnSearchText[property];
+			return $filter('filter')(scope.listForDisplay, criterion);
+		}
+
+		/**
+		 * Call this function when global search is triggered by user. If both search options are set enabled, only one will be active at a time.
+		 */
+		var clearColumnSearchCriteria = function() {
+			for (var i = 0; i < scope.searchableColumns.length; i++) {
+				var property = scope.searchableColumns[i];
+				if (scope.columnSearchText && scope.columnSearchText[property]) {
+					scope.columnSearchText[property] = '';
+				}
+			}
+		}
+
+		/**
+		 * Call this function when column search is triggered by user. If both search options are set enabled, only one will be active at a time.
+		 */		
+		var clearGlobalSearchText = function() {
+			if (scope.paginationX.searchText) {
+				scope.paginationX.searchText = '';
+			}
+		}
+
 		/***************************************************** External API secion starts **************************************************************/
 		var search = function() {
+			clearColumnSearchCriteria();
 			var filteredList = [];
 			if (scope.paginationX.searchText && scope.paginationX.searchText.trim().length > 0) {
 				for (var i = 0; i < scope.list.length; i++) {
@@ -329,6 +387,7 @@ function paginationXDirective($filter, $compile) {
 				scope.page = getPage(scope.listForDisplay, pageNumber);
 			}
 			scope.selectAll = isPageSelected();
+			setTBody();
 		}
 
 		var getSelectedRecords = function() {
@@ -352,9 +411,8 @@ function paginationXDirective($filter, $compile) {
 		}
 
 		var handlePageSelection = function() {
-			scope.paginationX.selectAll = !scope.paginationX.selectAll;
 			toggleSelection(getPage(scope.listForDisplay, scope.paginationX.currentPage));
-			setTable();
+			setTBody();
 		}
 
 		var toggleSelection = function(list) {
@@ -368,13 +426,22 @@ function paginationXDirective($filter, $compile) {
 		var handleRecordSelection = function(object) {
 			object.selected = !object.selected;
 			scope.paginationX.selectAll = isPageSelected();
-			setTable();
+			setTBody();
 		}
 
 		var load = function(list) {
 			scope.list = list;
 			init();
+			setTable();
 		}
+
+		var reload = function(list) {
+			scope.list = list;
+			init();
+			setTBody();
+			clearColumnSearchCriteria();
+			clearGlobalSearchText();
+		}		
 
 		/***************************************************** External API secion ends **************************************************************/
 
@@ -445,6 +512,7 @@ function paginationXDirective($filter, $compile) {
 			scope.paginationX.handlePageSelection = handlePageSelection;
 			scope.paginationX.handleRecordSelection = handleRecordSelection
 			scope.paginationX.load = load;
+			scope.paginationX.reload = reload;
 		}
 
 		var init = function() {
@@ -456,6 +524,7 @@ function paginationXDirective($filter, $compile) {
 			setExportOptions();
 			scope.setPage(1);
 			setToolbarOptions();
+			scope.showColumnSearch = scope.features.columnSearch ? scope.features.columnSearch : false;
 		}
 
 		var initSort = function(listToSort) {
@@ -479,7 +548,9 @@ function paginationXDirective($filter, $compile) {
 			scope.toolbarOptions = (scope.toolbarOptions === undefined) ? {} : scope.toolbarOptions;
 			scope.toolbarOptions.toolbarType = (scope.toolbarOptions.toolbarType === undefined) ? "textbox" : scope.toolbarOptions.toolbarType;
 			scope.toolbarOptions.linkSize = (scope.toolbarOptions.linkSize === undefined) ? 5 : scope.toolbarOptions.linkSize;
-			scope.setPageLinks(1);
+			if (scope.toolbarOptions.toolbarType === 'link') {
+				scope.setPageLinks(1);	
+			}
 		}
 
 		/** Except those columns in the column definition (passed to columns attribute) that has 'searchable' set to 'No', all
@@ -499,7 +570,6 @@ function paginationXDirective($filter, $compile) {
 
 				}
 			}
-			console.log('searchable columns = '+JSON.stringify(scope.searchableColumns));
 		}
 
 		var setExportOptions = function() {
@@ -576,7 +646,7 @@ function paginationXDirective($filter, $compile) {
 
 		if (scope.list && scope.list.length > 0) {
 			// If list is static, initialize the directive
-			init();
+			load(scope.list);
 		}
 		/***************************************************** Initialization section starts ****************************************************/
 	}; // LinkFn function ends

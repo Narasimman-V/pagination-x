@@ -38,7 +38,11 @@ There are 3 demos for PaginationX available with the source code. To run them al
 	- URL: http://localhost:8080/pagination-x-master/demo-simple.html
 	- Screenshot:
 
-![](./img/demo-simple.png 'Simple Demo')
+![](./img/demo-simple-colsearch.png 'Simple Demo')
+
+The screen shot below shows the simple demo without the column search text boxes. They can be displayed/hidden on clicking the 'Search+' button displayed at the top of the table. The column search option, it's button position and label can be customized easily. Please refer 5.2.2 features section in the Developer Manual below for more details.
+
+![](./img/demo-simple-colsearch.png 'Simple Demo')
 
 - **Complex** ( If you are new to pagination, please refer '3. Features' section below for the complete list of features )
 	- Demo with most of the features.
@@ -55,9 +59,13 @@ There are 3 demos for PaginationX available with the source code. To run them al
 	- URL: http://localhost:8080/pagination-x-master/demo-complex.html
 	- Screen shot:
 
-![](./img/demo-complex.png 'Complex Demo')
+![](./img/demo-complex-colsearch.png 'Complex Demo')
 
 ![](./img/demo-complex-log.png 'Complex Demo Console log')
+
+The screen shot below shows the complex demo without the column search text boxes. They can be displayed/hidden on clicking the 'Search+' button displayed at the top of the table. The column search option, it's button position and label can be customized easily. Please refer 5.2.2 features section in the Developer Manual below for more details.
+
+![](./img/demo-complex-colsearch-off.png 'Complex Demo Console log')
 
 - **Multiple Instances** 
 	- Demo where multiple paginations are displayed on the same page.
@@ -95,6 +103,8 @@ PaginationX is simple to use but rich in features. Important features are listed
 	- Two special buttons to get the next/previous set of page links apart from the usual next/previous/first/last buttons (applicable only if the navigation bar has links for pages)
 - **Search**
 	- By default, search looks through all displayed columns but search can be turned off for specific column(s). We can also add a different key for search or a multiple (comma separated) keys for a single column.
+- **Column Search**
+	- Column search let users search in individual columns and on multiple columns. Please refer the 5.2.2 features section below for details.
 - **Page Size Options**
 	- Page size options can be customized
 	- Default page size (page size on load) can also be customized
@@ -226,8 +236,8 @@ This is a mandatory attribute if you want to use multiple instances of Paginatio
 
 The 'features' attribute is a mandatory attribute. It's value informs the directive what are the features you want on a page. It can be passed as a simple, static JSON object from the controller in whose scope the directive resides. The snippet below shows a feature object with all possible attributes. 
 
-    $scope.features = {"selectColumn":true, "search":true, "pageSize":true, "paginationText":true, 
-		"export":true, "actionColumn":true};
+    $scope.features = {"selectColumn":true, "search":true, "columnSearch":true, "colSearchLabel":"Search+", "pageSize":true, 
+		"paginationText":true, "export":true, "actionColumn":true};
 
 I hope the meaning of each attribute can be intuitively understood from the names. Nevertheless, they are explained below:
 
@@ -236,9 +246,18 @@ I hope the meaning of each attribute can be intuitively understood from the name
 	- To turn it off for a particular row, add a 'selectable' attribute in the JSON object for that row and set it to false: selectable:false
 	- To get the list of selected records, please refer the section for 'pagination' attribute below.
 - **search**
-	- If set to true, a text box with search icon is displayed at the top left of the table. 
+	- If set to true, a text box with search icon is displayed at the top right above the table.
+- **columnSearch**
+	- If set to true, a text box is displayed under every column to search through only that column.
+	- Users can search through multiple columns individually using the respective text box at the column header.
+	- A button is displayed at the top above the table (with the default label 'Col Search'). By default text boxes are displayed for all searchable columns. Clicking this button toggles the display of these column search boxes.
+	- If both 'search' and this options are enabled, only one is active at a time. For example, if user uses the 'search' option, automatically any/all individual search done by the user earlier is/are cleared and vice versa.
+- **colSearchLabel**
+	- Lets developers set the label for the button displayed at the top above the table. Default value is 'Col Search'.
+	- This button lets users toggle the display of column search text boxes displayed at the top of every searchable columns.
 - **pageSize**
-	- If set to true, a drop down is displayed with a default set of page size value ['5', '10', '15', '25', '50'] will be set
+	- If set to true, a drop down is displayed with the following default page size values ['5', '10', '15', '25', '50'].
+	- The drop down is displayed at the top left above the table with the label 'size'. Please refer 2.Demo section above for screen shots.
 	- To change the number of options in the drop down and their values and to set the default page size on page load, please refer the section for 'pageSizeOptions' attribute below.
 -   **paginationText**
 	-   If set to true, the text with status (sample: 'Viewing 1 to 5 of 4001 records | Page 1 of 801 pages') is displayed at the bottom left of the table. 
@@ -376,7 +395,7 @@ Result is shown below:
 
 ![](./img/OverrideActionColumnSettings.png)
 
-#### 5.2.9 pagination-x ##
+#### 5.2.9 pagination-x (Attribute for the API)##
 
 This is the attribute for the PaginationX API. This and the 'action-handlers' attribute help developers extend or override the directive's behavior. It's a simple javascript object that lets developers access the following properties and methods (functions) (Technically, functions are also properties of a javascript object but a function contains a method instead of data):
 
@@ -400,9 +419,10 @@ This is the attribute for the PaginationX API. This and the 'action-handlers' at
 - **getSelectedRecords** Function to get the list of records selected by the user. This function cannot be overridden.
 - **handlePageSelection** Function to handle selection of all records on a page (by checking the global check box).
 - **handleRecordSelection(object)** Function to handle selection of a single record (by checking the check box for a row). It is passed the object for that row as argument. 
-- **load** Called to set the JSON list obtained from the server (usual scenario). Also, if the underlying list is changed dynamically (for example, after a re-query on the server), we can pass the new list to this function.  
+- **load** Called to set the JSON list obtained from the server (usual scenario). Also, if the underlying list is changed dynamically (for example, after a re-query on the server), we can pass the new list to this function.
+- **reload** If you want to set a new list of objects dynamically (for example, after a re-query on the server), call this method instead of the 'load' method. The 'load' method will also work. But it will add few more watchers every time it is called after the first loading.
 
-The pagination-x attribute is an optional attribute for POCs. But it is mandatory in real time projects. if you want to load the JSON list dynamically or access the data and functions explained above.
+The pagination-x attribute is an optional attribute for POCs. It makes things easy by saving time while working on POCs with hard-coded static list of JSON objects. But it is mandatory for real time projects. if you want to load the JSON list dynamically or access the data and functions explained above.
  
 It is very easy to access the pagination-x object. Just create a blank javascript object and pass it's reference to the pagination-x attribute as shown below:
 

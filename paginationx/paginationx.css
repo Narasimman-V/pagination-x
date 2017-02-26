@@ -19,6 +19,9 @@
 .search-div {
 	float:right;
 }
+.col-search-div {
+	float:left;
+}
 .search-icon {
 	padding-right:0px; float:left; margin-top:3px;
 }
@@ -34,6 +37,9 @@
 .pagination-toolbar-div {
 	float:right;margin:0;
 }
+.pagination-header {
+	//background-color: #5bc0de;
+}
 .pagination-text-style {
 	float:left;font-size:small; color:black;
 }
@@ -48,6 +54,18 @@
 }
 .select-column-header,.action-column-header {
 	text-align:left; padding-left:8px !important;
+}
+
+.column-search-textbox.active {
+	width:100%;height:19px;//border:0;
+}
+
+.column-search-textbox.inactive {
+	width:100%;height:19px;background-color:grey;border-style:none;//border:0;//background-color:#5bc0de;
+}
+
+.paginatin-header-filler {
+	display:block;height:19px;
 }
 
 #id_emp_roster th {

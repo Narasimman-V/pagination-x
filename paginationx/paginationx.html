@@ -2,7 +2,7 @@
    <!------------------------- 1. Row above the table with search box, export buttons, and page size drop-down --------------------------------- -->
    <div>
       <div class="page-size-div" ng-if="::features.pageSize">
-         <!----------- 1.C Division for page size drop-down --------- -->
+         <!----------- 1.A Division for page size drop-down --------- -->
          <span class="size-label">Size</span>
          <select id="pageSizeDrop" ng-options="size for size in pageSizeOptions.pageSizeMenu track by size" ng-model="paginationX.pageSize" name="pageSize" ng-change="changePageSize()" class="page-size-list"></select>
       </div>
@@ -12,10 +12,14 @@
             ng-class="{'pagination-buttons active export-buttons':listForDisplay.length > 0,'pagination-buttons inactive export-buttons':listForDisplay.length == 0}"> {{::option.buttonName}} </span>
       </div>
       <div class="search-div" ng-if="::features.search">
-         <!----------- 1.A Division for search box --------- -->
+         <!----------- 1.C Division for search box --------- -->
          <span class="glyphicon glyphicon-search search-icon" aria-hidden="true"></span>
          <input id="search" type="text" ng-model="paginationX.searchText" placeholder="Search" ng-change="search()" class="search-textbox">
       </div>
+      <div class="col-search-div" ng-if="::features.columnSearch">
+         <!----------- 1.D Division for search box --------- -->
+         <span ng-click="toggleColumnSearch()" class="pagination-buttons active"> {{::features.colSearchLabel || 'Col Search'}} </span>
+      </div>      
    </div>
    <br><br>
    <hr class="button-hr">
@@ -34,43 +38,44 @@
       <!----------- 4.B Division for pagination toolbar with textbox --------- -->
       <div ng-if="listForDisplay.length && toolbarOptions.toolbarType=='textbox'" class="pagination-toolbar-div">
          <span  ng-click="setPage(1)" ng-class="{'pagination-buttons active':paginationX.currentPage !== 1,'pagination-buttons inactive':paginationX.currentPage === 1}">
-         |<
+            |<
          </span>
          <span ng-click="setPage(paginationX.currentPage - 1)" ng-class="{'pagination-buttons active':paginationX.currentPage !== 1,'pagination-buttons inactive':paginationX.currentPage === 1}">
-         <<
+            <<
          </span>
          <input id="toolbar-text" type="text" ng-model="paginationX.goToPage" ng-change="setPage(paginationX.goToPage)" size="4" class="pagination-textbox" >
          <span ng-click="setPage(paginationX.currentPage*1+1)" ng-class="{'pagination-buttons active':paginationX.currentPage !== paginationX.totalPages,'pagination-buttons inactive':paginationX.currentPage === paginationX.totalPages}">
-         >>
+            >>
          </span>
          <span ng-click="setPage(paginationX.totalPages)" ng-class="{'pagination-buttons active':paginationX.currentPage !== paginationX.totalPages,'pagination-buttons inactive':paginationX.currentPage === paginationX.totalPages}">
-         >|
+            >|
          </span>
       </div>
 
+      <!-- <div id="span_employees"></div> -->
       <!----------- 4.C Division for pagination toolbar with links ---------- -->
       <div ng-if="listForDisplay.length && toolbarOptions.toolbarType=='link'" class="pagination-toolbar-div">
-         <span  ng-click="setPage(1)" ng-class="{'pagination-buttons active':paginationX.currentPage !== 1,'pagination-buttons inactive':paginationX.currentPage === 1}" title="Go to first page">
-         |<
+         <span  ng-click="setPage(1)" ng-class="{true:'pagination-buttons active', false:'pagination-buttons inactive'}[paginationX.currentPage !== 1]" title="Go to first page">
+            |<
          </span>
-         <span ng-click="setPage(paginationX.currentPage - 1)" ng-class="{'pagination-buttons active':paginationX.currentPage !== 1,'pagination-buttons inactive':paginationX.currentPage === 1}" title="Go to previous page">
-         <<
+         <span ng-click="setPage(paginationX.currentPage - 1)" ng-class="{true:'pagination-buttons active', false:'pagination-buttons inactive'}[paginationX.currentPage !== 1]" title="Go to previous page">
+            <<
          </span>
-         <span ng-click="setPageLinks(toolbarOptions.startPage - toolbarOptions.linkSize)" ng-class="{'pagination-buttons active':toolbarOptions.startPage !== 1,'pagination-buttons inactive':toolbarOptions.startPage === 1}" title="Display previous set of links">
-         <-
+         <span ng-click="setPageLinks(toolbarOptions.startPage - toolbarOptions.linkSize)" ng-class="{true:'pagination-buttons active', false:'pagination-buttons inactive'}[toolbarOptions.startPage !== 1]" title="Display previous set of links">
+            <-
          </span>
-         <span ng-repeat="link in toolbarOptions.links" ng-click="setPage(link)" ng-if="link <= paginationX.totalPages" ng-class="{'pagination-buttons active':(link !== paginationX.currentPage),'pagination-buttons inactive':(link == paginationX.currentPage)}">{{link}}</span>
-         <span ng-click="setPageLinks(toolbarOptions.startPage + toolbarOptions.linkSize)" ng-class="{'pagination-buttons active':(toolbarOptions.startPage + toolbarOptions.links.length) <= paginationX.totalPages,'pagination-buttons inactive':(toolbarOptions.startPage + toolbarOptions.links.length) > paginationX.totalPages}" title="Display next set of links">
-         ->
+         <span ng-repeat="link in toolbarOptions.links" ng-click="setPage(link)" ng-class="{true:'pagination-buttons active', false:'pagination-buttons inactive'}[link !== paginationX.currentPage]">{{::link}}</span>
+         <span ng-click="setPageLinks(toolbarOptions.startPage + toolbarOptions.linkSize)" ng-class="{true:'pagination-buttons active', false:'pagination-buttons inactive'} [(toolbarOptions.startPage + toolbarOptions.links.length) <= paginationX.totalPages]" title="Display next set of links">
+            ->
          </span>
-         <span ng-click="setPage(paginationX.currentPage*1+1)" ng-class="{'pagination-buttons active':paginationX.currentPage !== paginationX.totalPages,'pagination-buttons inactive':paginationX.currentPage === paginationX.totalPages}" title="Go to next page">
-         >>
+         <span ng-click="setPage(paginationX.currentPage*1+1)" ng-class="{true:'pagination-buttons active', false:'pagination-buttons inactive'}[paginationX.currentPage !== paginationX.totalPages]" title="Go to next page">
+            >>
          </span>
-         <span ng-click="setPage(paginationX.totalPages)" ng-class="{'pagination-buttons active':paginationX.currentPage !== paginationX.totalPages,'pagination-buttons inactive':paginationX.currentPage === paginationX.totalPages}" title="Go to last page">
-         >|
+         <span ng-click="setPage(paginationX.totalPages)" ng-class="{true:'pagination-buttons active', false:'pagination-buttons inactive'}[paginationX.currentPage !== paginationX.totalPages]" title="Go to last page">
+            >|
          </span>
       </div>
-   </div>
+   </div> 
    <br><br>
    <hr class="button-hr">
 </div>
