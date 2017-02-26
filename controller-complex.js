@@ -1,8 +1,8 @@
 'use strict';
 
-hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$location','$filter',function($scope, $rootScope, $http, $q, $location, $filter ) {
+hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$location','$filter','$timeout', function($scope, $rootScope, $http, $q, $location, $filter, $timeout ) {
 
-	$scope.features = {"selectColumn":true, "search":true, "pageSize":true, "paginationText":true, "export":true, "actionColumn":true};
+	$scope.features = {"selectColumn":true, "search":true, "columnSearch":true, "colSearchLabel":"Search+", "pageSize":true, "paginationText":true, "export":true, "actionColumn":true};
 
 	$scope.pagination = {};
 
@@ -15,7 +15,7 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 		{title:"First Name",dataKey:"firstname",sortKey:"firstname",width:"10%"},
 		{title:"Last Name",dataKey:"lastname",sortKey:"lastname",width:"10%"},
 		{title:"Designation",dataKey:"jobtitle",sortKey:"jobtitle",width:"17%"},
-		{title:"County",dataKey:"county",sortKey:"county",width:"10%",searchable:false},
+		{title:"County",dataKey:"county",sortKey:"county",width:"10%"},//,searchable:false},
 		{title:"City",dataKey:"city",sortKey:"city",width:"10%"},
 		{title:"Email",dataKey:"email",sortKey:"email",width:"14%",style:"overflow-wrap: break-word;word-wrap: break-word; word-break: break-all;"},
 		{title:"Mobile",dataKey:"mobile",sortKey:"mobile",width:"10%"}
@@ -4344,7 +4344,12 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 	$scope.changeList = function() {
 		$scope.employees = [];
 		$scope.employees = $scope.employeesModified;
-		$scope.pagination.load($scope.employeesModified);
+		$scope.pagination.reload($scope.employeesModified);
 	}
+
+	$timeout (function() {
+		$scope.pagination.load($scope.employees);	
+	}, 100);
+	
 
 }]);
