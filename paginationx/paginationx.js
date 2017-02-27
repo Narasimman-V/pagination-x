@@ -101,7 +101,7 @@ function paginationXDirective($filter, $compile) {
 			var element = angular.element('#'+scope.id+' tbody');
 			var compiled = $compile(getTBody(scope.columns))(scope);
 			element.replaceWith(compiled);
-		}		
+		}
 
 		var getTemplate = function() {
 			var table = '<table id=table_' + scope.id + ' class="table table-striped table-hover border-custom-class-table" >';
@@ -306,7 +306,6 @@ function paginationXDirective($filter, $compile) {
 		}
 
 		scope.toggleColumnSearch = function() {
-			console.log('toggleColumnSearch 1111111111'+ scope.showColumnSearch);
 			scope.showColumnSearch = !scope.showColumnSearch;
 		}
 
@@ -344,7 +343,7 @@ function paginationXDirective($filter, $compile) {
 
 		/**
 		 * Call this function when column search is triggered by user. If both search options are set enabled, only one will be active at a time.
-		 */		
+		 */
 		var clearGlobalSearchText = function() {
 			if (scope.paginationX.searchText) {
 				scope.paginationX.searchText = '';
@@ -441,7 +440,7 @@ function paginationXDirective($filter, $compile) {
 			setTBody();
 			clearColumnSearchCriteria();
 			clearGlobalSearchText();
-		}		
+		}
 
 		/***************************************************** External API secion ends **************************************************************/
 
@@ -549,7 +548,7 @@ function paginationXDirective($filter, $compile) {
 			scope.toolbarOptions.toolbarType = (scope.toolbarOptions.toolbarType === undefined) ? "textbox" : scope.toolbarOptions.toolbarType;
 			scope.toolbarOptions.linkSize = (scope.toolbarOptions.linkSize === undefined) ? 5 : scope.toolbarOptions.linkSize;
 			if (scope.toolbarOptions.toolbarType === 'link') {
-				scope.setPageLinks(1);	
+				scope.setPageLinks(1);
 			}
 		}
 
