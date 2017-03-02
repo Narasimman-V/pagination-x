@@ -7,7 +7,8 @@ PaginationX (X for extensible – explained in the design section below) is an A
 - Very easy to add/remove a column for select all/few rows and a column for action elements (button/link). No coding is required. **All through static JSON configurations**.
 - **High performance**. Number of angular watchers is negligible (only about 30-60 max).
 - Support for **fast PDF/Excel export** (Credits to JsPDF and AlsSQL)
-- Very **minimal to no coding** required (one of the most important design goals)  
+- Very **minimal to no coding** required (one of the most important design goals).
+- Very flexible (multiple solutions to the same problem).
 
 Please refer the Features and Design sections below for more details.
 
@@ -89,9 +90,10 @@ PaginationX is simple to use but rich in features. Important features are listed
 	- An optional column with check boxes to select all records or specific records on a page.
 	- Ability to make a particular row selectable / non-selectable through simple configuration change.
 - **Action column (optional)** 
-	- A column with buttons/links or both to do something on a particular row displayed
-	- Handler function for buttons/links in controller can be easily mapped through a simple JSON object
+	- A column with buttons/links or both to do something on a particular row displayed.
+	- 	- Handler function for buttons/links in controller can be easily mapped through a simple JSON object
 	- If required, optionally add an id or class or both so that any JQuery event handler can handle an event 
+	- Action column is displayed as the last column in the table. However, you can make any column in pagination-x an action column by embedding html/Angular templating elements. For more details, please refer '4. Design' section below. 
 - **Export options**
 	- Export to PDF/XLSX formats (Thanks to the libraries jsPDF and AlaSQL)
 	- Export records on the page or all records or only selected/filtered records.
@@ -115,11 +117,12 @@ PaginationX is simple to use but rich in features. Important features are listed
 
 Some of the important design goals are:
 
-- **High Performance** Minimal use of ng-repeat and two-way bindings and so less angular watchers. The number of watchers is around 30-60 no matter how many rows are displayed. This will definitely not affect the performance of the page. Future versions may have zero watchers.
+- **High Performance** Minimal use of ng-repeat and two-way bindings and so less angular watchers. The number of watchers is less than 100 (depending on how many features are enabled) no matter how many rows are displayed. This will definitely not affect the performance of the page. Future versions may have zero watchers.
 - **Easy Customization** Enabling or disabling features or customizing features should be very easy. All customizations are done through JSON based static configurations. No single line of JS code or HTML markup is needed. When you want to extend directive's behavior though, you have to add code in your Angular controller.
 - **Extensible (The X in PaginationX)** The behavior of the directive for all important use cases can be easily extended. Users can completely change the behavior or just add some and use the default behavior. The API for important use cases and basic information about pagination is exposed as a simple JSON object. This object can be accessed in your Angular controller to extend/override default behavior. For details, please refer the Developer Guide below.
+- **Very Flexible** Separation of concerns is one of the design goals of pagination-x. For example, to create an action column, we need not add any html or pieces of Angular JS templating code inside the JSON. However, if required, we can embed html/Angular templating code along with any formatting directly in your JSON. It is flexible.
 - **Has its own scope** PaginationX uses isolate scope so that model values in controller are not updated or overwritten by mistake. Also, it is possible to use the directive multiple times on the same page (the data source should be different for each instance).
-- **Skinnable** PaginationX uses a separate CSS for UI. Though some classes are already there in the directive's template (paginationx.html), almost all sections can be changed through the directive's style sheet (paginationx.css). 
+- **Skinnable** PaginationX uses a separate CSS for UI (To separate formatting from structure). Though some classes are already there in the directive's template (paginationx.html), almost all sections can be changed through the directive's style sheet (paginationx.css). 
 
    
 ##5. Developer Manual
@@ -297,7 +300,8 @@ Meaning and use of attributes (Again, the names are self explanatory I hope):
 - **width** Optional property. Gives the width for the column.
 - **style** Optional property. Adds CSS style to the column.
 - **searchable** Optional property. By default all columns are searchable. To turn off searching on a particular column, set this property to false. In the example above, column 'County' is not searchable since 'searchable' property is set to false.
-- **searchKeys** Optional property. A single or multiple property names (separated by comma) to search for.
+- **searchKeys** Optional property. A single or multiple property names (separated by comma) to search for. This is for the global search option that searches through all columns.
+- **searchKey** Optional property. The property name for an individual column search. If this is not given, the sortKey will be the key for searching for that column (this may be changed to dataKey) in the future.
 - **exportKey** Optional property. By default, the property used to display a column is exported. To change this, a different property can be specified using this attribute.
 
 #### 5.2.5 page-size-options ##
@@ -374,6 +378,8 @@ The 'action-column-options' has action column settings for the entire action col
 The snippet given above creates an action column with the header 'Actions', an Edit button, and a Delete link in each row of the action column as shown below:
 
 ![](./img/GlobalActionColumnSettings.png)
+
+> **NOTE:** The action column option is there to address the separation of concerns design goal. If we use it, we don't need to embed HTML or pieces of AngularJS template into the JSON objects (which is typically done in the AngularJS controller). However, if required, we can embed HTML or pieces of Angular JS template into any column to make it the 'action column'. All we have to do is simply add the HTML or pieces of Angular JS template code into the property for that column in the JSON object. 
 
 #### 5.2.8.2 Overriding Global Action Column Settings for specific rows
 
