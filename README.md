@@ -106,7 +106,7 @@ PaginationX is simple to use but rich in features. Important features are listed
 - **Search**
 	- By default, search looks through all displayed columns but search can be turned off for specific column(s). We can also add a different key for search or a multiple (comma separated) keys for a single column.
 - **Column Search**
-	- Column search let users search in individual columns and on multiple columns. Please refer the 5.2.2 features section below for details.
+	- Column search let users search in individual columns and on multiple columns. Column search can be for exact or partial match. Please refer the 5.2.2 features section below for details.
 - **Page Size Options**
 	- Page size options can be customized
 	- Default page size (page size on load) can also be customized
@@ -255,6 +255,8 @@ I hope the meaning of each attribute can be intuitively understood from the name
 	- Users can search through multiple columns individually using the respective text box at the column header.
 	- A button is displayed at the top above the table (with the default label 'Col Search'). By default text boxes are displayed for all searchable columns. Clicking this button toggles the display of these column search boxes.
 	- If both 'search' and this options are enabled, only one is active at a time. For example, if user uses the 'search' option, automatically any/all individual search done by the user earlier is/are cleared and vice versa.
+	- Column search can be for exact or partial match.
+	- Please refer '5.2.4 columns' section to know how to configure different options.
 - **colSearchLabel**
 	- Lets developers set the label for the button displayed at the top above the table. Default value is 'Col Search'.
 	- This button lets users toggle the display of column search text boxes displayed at the top of every searchable columns.
@@ -286,7 +288,7 @@ This is a mandatory attribute. This describes the options for each column in the
 		{title:"Last Name",dataKey:"lastname",sortKey:"lastname",width:"8%"},
 		{title:"Designation",dataKey:"jobtitle",sortKey:"jobtitle",width:"20%"},
 		{title:"County",dataKey:"county",sortKey:"county",width:"10%",searchable:false},
-		{title:"City",dataKey:"city",sortKey:"city",width:"10%"},
+		{title:"City",dataKey:"city",sortKey:"city",colSearchMatch:"exact",width:"10%"},
 		{title:"Email",dataKey:"email",sortKey:"email",width:"15%",
 			style:"overflow-wrap: break-word;word-wrap: break-word; word-break: break-all;"},
 		{title:"Mobile",dataKey:"mobile",sortKey:"mobile",width:"10%"}
@@ -302,6 +304,7 @@ Meaning and use of attributes (Again, the names are self explanatory I hope):
 - **searchable** Optional property. By default all columns are searchable. To turn off searching on a particular column, set this property to false. In the example above, column 'County' is not searchable since 'searchable' property is set to false.
 - **searchKeys** Optional property. A single or multiple property names (separated by comma) to search for. This is for the global search option that searches through all columns.
 - **searchKey** Optional property. The property name for an individual column search. If this is not given, the sortKey will be the key for searching for that column (this may be changed to dataKey) in the future.
+- **colSearchMatch** Optional property. This specifies if the search is for exact or partial match. If set to 'exact', the matching is exact (case insensitive though). For example, 'ashkum' or 'ASHKUM' is considered a match for 'Ashkum'. The default matching is partial. In the above example, column city is configured for exact column search (...,colSearchMatch:"exact",...).
 - **exportKey** Optional property. By default, the property used to display a column is exported. To change this, a different property can be specified using this attribute.
 
 #### 5.2.5 page-size-options ##

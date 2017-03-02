@@ -16,7 +16,7 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 		{title:"Last Name",dataKey:"lastname",sortKey:"lastname",width:"10%"},
 		{title:"Designation",dataKey:"jobtitle",sortKey:"jobtitle",width:"17%"},
 		{title:"County",dataKey:"county",sortKey:"county",width:"10%"},//,searchable:false},
-		{title:"City",dataKey:"city",sortKey:"city",width:"10%"},
+		{title:"City",dataKey:"city",sortKey:"city",colSearchMatch:"exact",width:"10%"},
 		{title:"Email",dataKey:"email",sortKey:"email",width:"14%",style:"overflow-wrap: break-word;word-wrap: break-word; word-break: break-all;"},
 		{title:"Mobile",dataKey:"mobile",sortKey:"mobile",width:"10%"}
 	];

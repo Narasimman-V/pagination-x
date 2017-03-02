@@ -326,7 +326,16 @@ function paginationXDirective($filter, $compile) {
 		var searchByColumn = function(property) {
 			var criterion = {};
 			criterion[property] = scope.columnSearchText[property];
-			return $filter('filter')(scope.listForDisplay, criterion);
+			var column = alasql('select * from ? where searchKey=? or dataKey=?',[scope.columns,property,property]);
+			if(column[0].colSearchMatch && column[0].colSearchMatch === 'exact') {
+				return $filter('filter')(scope.listForDisplay, criterion, colSearchComparator);
+			} else {
+				return $filter('filter')(scope.listForDisplay, criterion);	
+			}
+		}
+
+		var colSearchComparator = function(actual, expected) {
+			return (actual.trim().toUpperCase() === expected.trim().toUpperCase());
 		}
 
 		/**
