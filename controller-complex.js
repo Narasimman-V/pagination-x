@@ -25,7 +25,7 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 		title:"Actions",
 		colWidth:"14%",
 		htmlAttrbs:'id="act-col-id" class="act-col-class"',
-		actions:[{name:"Edit", type:"Button", htmlAttrbs:'id="bt-edit" class="bt-edit-class"'},{name:"Delete", type:"Link", href:"test.html", htmlAttrbs:'id="lnk-del-id" class="lnk-del-class"'}]
+		actions:[{label:"Edit", name:"Edit", type:"Button", htmlAttrbs:'id="bt-edit" class="bt-edit-class"'},{label:"Delete", name:"Delete", type:"Link", href:"test.html", htmlAttrbs:'id="lnk-del-id" class="lnk-del-class"'}]
 	};
 
 	var pdfExportColumns = [
@@ -57,12 +57,12 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 	};
 
 	$scope.exportOptions = [
-		{type:"pdf",records:"page",columns:pdfExportColumns,fileName:"Employee-Roster-Report",buttonName:"PdfPage",style:pdfExportStyle,header:'Employee Report'},
-		{type:"pdf",records:"all",columns:pdfExportColumns,fileName:"Employee-Roster-Report",buttonName:"PdfAll",style:pdfExportStyle,header:'Employee Report'},
-		{type:"pdf",records:"selected",columns:pdfExportColumns,fileName:"Employee-Roster-Report",buttonName:"Pdf",style:pdfExportStyle,header:'Employee Report'},
-		{type:"excel",records:"page",columns:excelExportColumns,fileName:"EmployeeRoster",buttonName:"XLPage"},
-		{type:"excel",records:"all",columns:excelExportColumns,fileName:"EmployeeRoster",buttonName:"XLAll"},
-		{type:"excel",records:"selected",columns:excelExportColumns,fileName:"EmployeeRoster",buttonName:"XL"},
+		{type:"pdf",records:"page",columns:pdfExportColumns,fileName:"Employee-Roster-Report",label:"PdfPage",style:pdfExportStyle,header:'Employee Report'},
+		{type:"pdf",records:"all",columns:pdfExportColumns,fileName:"Employee-Roster-Report",label:"PdfAll",style:pdfExportStyle,header:'Employee Report'},
+		{type:"pdf",records:"selected",columns:pdfExportColumns,fileName:"Employee-Roster-Report",label:"Pdf",style:pdfExportStyle,header:'Employee Report'},
+		{type:"excel",records:"page",columns:excelExportColumns,fileName:"EmployeeRoster",label:"XLPage"},
+		{type:"excel",records:"all",columns:excelExportColumns,fileName:"EmployeeRoster",label:"XLAll"},
+		{type:"excel",records:"selected",columns:excelExportColumns,fileName:"EmployeeRoster",label:"XL"},
 	];
 
 	$scope.getSelectedRecords = function() {
@@ -124,7 +124,7 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 
 	$scope.employees = [
 		//{"Sno":1,"firstname":"Michelle","lastname":"Fisher","jobtitle":"HRD/Training and Development Administrator","county":'<span style="color:red;">Summerbush</span>',"city":"East Pepperell","email":"michelle.fisher@kmail.com","mobile":815231416,selectable:false,actions:[{name:"Edit", type:"Button", htmlAttrbs:'id="abc" class="def"'},{name:"Delete", type:"Button", htmlAttrbs:'id="ijk" class="lmn"'}]},
-		{"Sno":1,"firstname":"Michelle","lastname":"Fisher","jobtitle":"HRD/Training and Development Administrator","county":"Summerbush","countyStyle":"county-style","city":"East Pepperell","email":"michelle.fisher@kmail.com","mobile":815231416,selectable:false,actions:[{name:"Edit", type:"Button", htmlAttrbs:'id="abc" class="def"'},{name:"Delete", type:"Button", htmlAttrbs:'id="ijk" class="lmn"'}]},
+		{"Sno":1,"firstname":"Michelle","lastname":"Fisher","jobtitle":"HRD/Training and Development Administrator","county":"Summerbush","countyStyle":"county-style","city":"East Pepperell","email":"michelle.fisher@kmail.com","mobile":815231416,selectable:false,actions:[{label:"Edit", name:"Edit", type:"Button", htmlAttrbs:'id="abc" class="def"'},{label:"Delete", name:"Delete", type:"Button", htmlAttrbs:'id="ijk" class="lmn"'}]},
 		{"Sno":2,"firstname":"Phil","lastname":"Poole","jobtitle":"Training Coordinator","county":"Edgecliff","city":"Ashkum","email":"phil.poole@kmail.com","mobile":833966721},
 		{"Sno":3,"firstname":"Joshua","lastname":"Gibson","jobtitle":"Sales Consultant","county":"Westercrest","city":"Lanesville","email":"joshua.gibson@kmail.com","mobile":812850587},
 		{"Sno":4,"firstname":"Sally","lastname":"Young","jobtitle":"High-Pressure Engineer","county":"Esterlyn","city":"Ponder","email":"sally.young@kmail.com","mobile":920749308},
@@ -4348,8 +4348,8 @@ hrapp.controller('HRAppController',['$scope','$rootScope','$http','$q','$locatio
 	}
 
 	$timeout (function() {
-		$scope.pagination.load($scope.employees);	
+		$scope.pagination.load($scope.employees);
 	}, 100);
-	
+
 
 }]);

@@ -106,7 +106,7 @@ PaginationX is simple to use but rich in features. Important features are listed
 - **Search**
 	- By default, search looks through all displayed columns but search can be turned off for specific column(s). We can also add a different key for search or a multiple (comma separated) keys for a single column.
 - **Column Search**
-	- Column search let users search in individual columns and on multiple columns. Column search can be for exact or partial match. Please refer the 5.2.2 features section below for details.
+	- Column search let users search in individual columns and on multiple columns. Column search can be for exact or partial match. Please refer the '5.2.2 features' section below for details.
 - **Page Size Options**
 	- Page size options can be customized
 	- Default page size (page size on load) can also be customized
@@ -374,6 +374,7 @@ The 'action-column-options' has action column settings for the entire action col
 - **colWidth** Optional property. The width for the action column.
 - **htmlAttrbs** Optional property. The HTML attributes for the action column (which is a <td\> of HTML <table\>. This is a simple yet powerful option. Any number of HTML attributes can be set in a single string. From design perspective, this improves performance also (since we can avoid a concatenation operation internally for each attribute). In the sample snippet above, htmlAttrbs has both 'id' and 'class' HTML attributes of <td\>. You can give any number of HTML attributes verbatim as shown above. It should be a simple string as if copied from the <td\> settings of a HTML <table\>.
 - **actions** Mandatory property. This is where the button(s) or link(s) or both for the action column are configured. For each button or link, a JSON definition object is added. In the sample snippet above, we have a button and a link. Following are the properties of this JSON object.
+	- **label** Mandatory property. Label for the action button or link.
 	- **name** Mandatory property. Name of the HTML button or link. This property is used to map the handler for the click event of the button or link in the 'action-handlers' attribute. Please refer section 'action-handlers' below for details.
 	- **type** Optional property. Type of the action element. At the moment, only two types are supported - button and link. Default type is Button. It's value should be 'Button' for buttons and 'Link' for links.
 	- **href** Mandatory property if 'type' is 'Link'. Gives the URL for the HTML link.
@@ -514,14 +515,14 @@ The snippet below shows export options for all six options:
 
 	$scope.exportOptions = [
 		{type:"pdf",records:"page",columns:pdfExportColumns,fileName:"Employee-Roster-Report",
-			buttonName:"PdfPage",style:pdfExportStyle,header:'Employee Report'},
+			label:"PdfPage",style:pdfExportStyle,header:'Employee Report'},
 		{type:"pdf",records:"all",columns:pdfExportColumns,fileName:"Employee-Roster-Report",
-			buttonName:"PdfAll",style:pdfExportStyle,header:'Employee Report'},
+			label:"PdfAll",style:pdfExportStyle,header:'Employee Report'},
 		{type:"pdf",records:"selected",columns:pdfExportColumns,fileName:"Employee-Roster-Report",
-			buttonName:"Pdf",style:pdfExportStyle,header:'Employee Report'},
-		{type:"excel",records:"page",columns:excelExportColumns,fileName:"EmployeeRoster",buttonName:"XLPage"},
-		{type:"excel",records:"all",columns:excelExportColumns,fileName:"EmployeeRoster",buttonName:"XLAll"},
-		{type:"excel",records:"selected",columns:excelExportColumns,fileName:"EmployeeRoster",buttonName:"XL"},
+			label:"Pdf",style:pdfExportStyle,header:'Employee Report'},
+		{type:"excel",records:"page",columns:excelExportColumns,fileName:"EmployeeRoster",label:"XLPage"},
+		{type:"excel",records:"all",columns:excelExportColumns,fileName:"EmployeeRoster",label:"XLAll"},
+		{type:"excel",records:"selected",columns:excelExportColumns,fileName:"EmployeeRoster",label:"XL"},
 	];
 
 	var pdfExportColumns = [
@@ -560,7 +561,7 @@ Meaning and use of all the properties of export-options object:
 - **records** Optional property. As explained above, there are three options. Set it to 'page' to export only the current page records. Set it to 'all' to export all pages. Set it to 'selected' to export only selected or filtered records. This is the default value.
 - **columns** Optional property. Specifies the columns to be exported and their names . If it is not set, all columns in the 'columns' attribute are exported. In the example above, there are two separate column arrays - one for PDF and one for Excel. A single definition can be used for both. For each column, only two properties are required - 'title' for header and 'dataKey' for the JSON attribute.
 - **fileName** Optional property. Specifies the name of the exported file. If it is not set, default value is 'PdfReport' for PDF and 'ExcelReport' for Excel.
-- **buttonName** Optional property. Sets the name of the export button. If it is not set, default value is 'Pdf' for PDF and 'XL' for Excel.
+- **label** Optional property. Sets the name of the export button. If it is not set, default value is 'Pdf' for PDF and 'XL' for Excel.
 - **style** Optional property. Applicable only for PDF export. This lets you format the PDF file to be exported. PaginationX uses JsPDF for PDF export (an excellent tool for PDF exports) For details please refer the JsPDF documentation.
 - **header** Optional property. Applicable only for PDF export. This lets you give a title to be displayed at the beginning of the PDF file.
 

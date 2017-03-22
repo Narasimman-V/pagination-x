@@ -129,7 +129,7 @@ function paginationXDirective($filter, $compile) {
 			tableHeader = tableHeader + '</tr>';
 
 			if (scope.features.columnSearch) {
-				tableHeader = tableHeader + '<tr ng-show="showColumnSearch">';
+				tableHeader = tableHeader + '<tr ng-show="showColumnSearch" class="pagination-col-search">';
 				tableHeader =  (scope.features.selectColumn) ? tableHeader + '<th></th>' : tableHeader;
 				for (var j = 0; j < columns.length; j++) {
 					var searchKey = scope.columns[j].searchKey || scope.columns[j].dataKey;
@@ -180,9 +180,9 @@ function paginationXDirective($filter, $compile) {
 			actionColumn = actionColumn + '<td width="' + options.colWidth + '" ' + options.htmlAttrbs + '>';
 			for (var i = 0; i < actions.length; i++) {
 				if (actions[i].type === undefined || actions[i].type === "Button") {
-					actionColumn = actionColumn + '<button ' + actions[i].htmlAttrbs + ' ng-click="actionHandler(\'' + actions[i].name + '\',page[' + index + '])" ' + actions[i].status + '>' + actions[i].name + '</button>&nbsp';
+					actionColumn = actionColumn + '<button ' + actions[i].htmlAttrbs + ' ng-click="actionHandler(\'' + actions[i].name + '\',page[' + index + '])" ' + actions[i].status + '>' + actions[i].label + '</button>&nbsp';
 				} else if (actions[i].type === "Link") {
-					actionColumn = actionColumn + '<a ' + actions[i].htmlAttrbs + ' href="' + actions[i].href + '" ng-click="actionHandler(\'' + actions[i].name + '\',page[' + index + '])" ' + actions[i].status + '>' + actions[i].name + '</a>&nbsp';
+					actionColumn = actionColumn + '<a ' + actions[i].htmlAttrbs + ' href="' + actions[i].href + '" ng-click="actionHandler(\'' + actions[i].name + '\',page[' + index + '])" ' + actions[i].status + '>' + actions[i].label + '</a>&nbsp';
 				}
 			}
 			actionColumn = actionColumn + '</td>';
@@ -265,7 +265,16 @@ function paginationXDirective($filter, $compile) {
 					break;
 				}
 			}
-			return isPageSelected;
+
+			var allRecordsNotSelectable = true;
+			for (var i = 0; i < curPage.length; i++) {
+				if (curPage[i].selectable === undefined || curPage[i].selectable === true) {
+					allRecordsNotSelectable = false;
+					break;
+				}
+			}
+
+			return (isPageSelected && !allRecordsNotSelectable);
 		}
 
 		/**
@@ -325,17 +334,17 @@ function paginationXDirective($filter, $compile) {
 
 		var searchByColumn = function(property) {
 			var criterion = {};
-			criterion[property] = scope.columnSearchText[property];
+			criterion[property] = scope.columnSearchText[property].trim();
 			var column = alasql('select * from ? where searchKey=? or dataKey=?',[scope.columns,property,property]);
 			if(column[0].colSearchMatch && column[0].colSearchMatch === 'exact') {
 				return $filter('filter')(scope.listForDisplay, criterion, colSearchComparator);
 			} else {
-				return $filter('filter')(scope.listForDisplay, criterion);	
+				return $filter('filter')(scope.listForDisplay, criterion);
 			}
 		}
 
 		var colSearchComparator = function(actual, expected) {
-			return (actual.trim().toUpperCase() === expected.trim().toUpperCase());
+			return actual.trim().toUpperCase() === expected.trim().toUpperCase();
 		}
 
 		/**
@@ -441,6 +450,8 @@ function paginationXDirective($filter, $compile) {
 			scope.list = list;
 			init();
 			setTable();
+			clearColumnSearchCriteria();
+			clearGlobalSearchText();
 		}
 
 		var reload = function(list) {
@@ -568,11 +579,11 @@ function paginationXDirective($filter, $compile) {
 			for (var i = 0; i < scope.columns.length; i++) {
 				if (scope.columns[i].searchable === undefined || scope.columns[i].searchable) {
 					if (scope.columns[i].searchKeys === undefined) {
-						scope.searchableColumns.push(scope.columns[i].sortKey);
+						scope.searchableColumns.push(scope.columns[i].searchKey || scope.columns[i].sortKey);
 					} else {
 						var searchKeys = scope.columns[i].searchKeys.split(",");
-						for (var i = 0; i < searchKeys.length; i++) {
-							scope.searchableColumns.push(searchKeys[i]);
+						for (var j = 0; j < searchKeys.length; j++) {
+							scope.searchableColumns.push(searchKeys[j]);
 						}
 					}
 

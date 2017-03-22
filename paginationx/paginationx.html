@@ -9,7 +9,7 @@
       <div class="export-div" ng-if="::features.export">
          <!----------- 1.B Division for export buttons --------- -->
          <span ng-repeat="option in ::exportOptions" ng-click="export(option)"
-            ng-class="{'pagination-buttons active export-buttons':listForDisplay.length > 0,'pagination-buttons inactive export-buttons':listForDisplay.length == 0}"> {{::option.buttonName}} </span>
+            ng-class="{'pagination-buttons active export-buttons {{::option.type}} {{::option.records}}':listForDisplay.length > 0,'pagination-buttons inactive export-buttons':listForDisplay.length == 0}"> {{::option.label}} </span>
       </div>
       <div class="search-div" ng-if="::features.search">
          <!----------- 1.C Division for search box --------- -->
@@ -19,7 +19,7 @@
       <div class="col-search-div" ng-if="::features.columnSearch">
          <!----------- 1.D Division for search box --------- -->
          <span ng-click="toggleColumnSearch()" class="pagination-buttons active"> {{::features.colSearchLabel || 'Col Search'}} </span>
-      </div>      
+      </div>
    </div>
    <br><br>
    <hr class="button-hr">
@@ -75,7 +75,7 @@
             >|
          </span>
       </div>
-   </div> 
+   </div>
    <br><br>
    <hr class="button-hr">
 </div>
