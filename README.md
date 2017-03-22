@@ -577,7 +577,6 @@ Meaning and use of all the properties of export-options object:
 			"county":"Summerbush","countyStyle":"county-style", ... },
 		...
 	];`
-
 Here 'county-style' is a simple CSS class (.county-style { color:red; } ). Pagination-x uses HTML 'table' to display tabular data and this class is added to the particular cell ('td') of the table.
  2. **Embedding HTML** This is another way to add style to a cell in the table. But if user exports data, HTML markup is also exported. If you must use this solution, there is a workaround for this problem. Create a separate column for displaying. This column should not be part of the column list for export. Please refer section '5.2.11 export-options' for details on how to configure export columns. The snippet below shows how to use <span\> element to highlight the county column in red for the first record:
  
