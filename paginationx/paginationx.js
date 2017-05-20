@@ -397,7 +397,7 @@ function paginationXDirective($filter, $compile) {
 		var setPage = function(pageNumber) {
 			if (scope.listForDisplay.length === 0) {
 				scope.page = [];
-				return;
+				//return; // Commented to fix the bug in search function on 20-May-2017.
 			} else if (pageNumber && pageNumber >= 1 && pageNumber <= scope.paginationX.totalPages) {
 				scope.paginationX.currentPage = pageNumber;
 				scope.paginationX.goToPage = pageNumber;

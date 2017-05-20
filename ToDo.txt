@@ -1,0 +1,6 @@
+To Do:
+
+1. Add more the documentation (export keys, orgnanization, etc)
+2. Server side pagination (both cases - retrieving all pages or only one page at a time).
+3. Bootstrap theme and other 'skins'.
+4. Try to reduce the watches to zero.
