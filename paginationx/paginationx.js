@@ -216,7 +216,6 @@ function paginationXDirective($filter, $compile) {
 				externalHandler();
 			} else {
 				scope.paginationX.changePageSize();
-				scope.setPageLinks(1);
 			}
 		}
 
@@ -392,6 +391,7 @@ function paginationXDirective($filter, $compile) {
 		var changePageSize = function() {
 			scope.paginationX.totalPages = Math.ceil(scope.listForDisplay.length / scope.paginationX.pageSize);
 			scope.setPage(1);
+			scope.setPageLinks(1);
 		}
 
 		var setPage = function(pageNumber) {
